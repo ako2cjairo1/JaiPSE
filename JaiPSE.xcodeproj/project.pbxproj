@@ -9,21 +9,25 @@
 /* Begin PBXBuildFile section */
 		D5CA28DB234C2AD700596188 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA28DA234C2AD700596188 /* AppDelegate.swift */; };
 		D5CA28DD234C2AD700596188 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA28DC234C2AD700596188 /* SceneDelegate.swift */; };
-		D5CA28DF234C2AD700596188 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA28DE234C2AD700596188 /* ViewController.swift */; };
-		D5CA28E2234C2AD700596188 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5CA28E0234C2AD700596188 /* Main.storyboard */; };
 		D5CA28E4234C2ADE00596188 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5CA28E3234C2ADE00596188 /* Assets.xcassets */; };
 		D5CA28E7234C2ADE00596188 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5CA28E5234C2ADE00596188 /* LaunchScreen.storyboard */; };
+		D5CA28F1234C2C6A00596188 /* StocksVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA28F0234C2C6A00596188 /* StocksVC.swift */; };
+		D5CA2902234C496200596188 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA2900234C496100596188 /* UIColorExtension.swift */; };
+		D5CA2903234C496200596188 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA2901234C496200596188 /* UIViewExtension.swift */; };
+		D5CA2905234C6B2400596188 /* SearchWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA2904234C6B2400596188 /* SearchWidget.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D5CA28D7234C2AD700596188 /* JaiPSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JaiPSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5CA28DA234C2AD700596188 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D5CA28DC234C2AD700596188 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		D5CA28DE234C2AD700596188 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		D5CA28E1234C2AD700596188 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D5CA28E3234C2ADE00596188 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5CA28E6234C2ADE00596188 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D5CA28E8234C2ADE00596188 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D5CA28F0234C2C6A00596188 /* StocksVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksVC.swift; sourceTree = "<group>"; };
+		D5CA2900234C496100596188 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		D5CA2901234C496200596188 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		D5CA2904234C6B2400596188 /* SearchWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWidget.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +60,41 @@
 		D5CA28D9234C2AD700596188 /* JaiPSE */ = {
 			isa = PBXGroup;
 			children = (
+				D5CA28F2234C2D9100596188 /* View */,
+				D5CA28EF234C2BCE00596188 /* Controller */,
 				D5CA28DA234C2AD700596188 /* AppDelegate.swift */,
 				D5CA28DC234C2AD700596188 /* SceneDelegate.swift */,
-				D5CA28DE234C2AD700596188 /* ViewController.swift */,
-				D5CA28E0234C2AD700596188 /* Main.storyboard */,
 				D5CA28E3234C2ADE00596188 /* Assets.xcassets */,
 				D5CA28E5234C2ADE00596188 /* LaunchScreen.storyboard */,
 				D5CA28E8234C2ADE00596188 /* Info.plist */,
 			);
 			path = JaiPSE;
+			sourceTree = "<group>";
+		};
+		D5CA28EF234C2BCE00596188 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D5CA28F0234C2C6A00596188 /* StocksVC.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		D5CA28F2234C2D9100596188 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D5CA28FB234C48CA00596188 /* Extension */,
+				D5CA2904234C6B2400596188 /* SearchWidget.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D5CA28FB234C48CA00596188 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				D5CA2900234C496100596188 /* UIColorExtension.swift */,
+				D5CA2901234C496200596188 /* UIViewExtension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +157,6 @@
 			files = (
 				D5CA28E7234C2ADE00596188 /* LaunchScreen.storyboard in Resources */,
 				D5CA28E4234C2ADE00596188 /* Assets.xcassets in Resources */,
-				D5CA28E2234C2AD700596188 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,23 +167,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5CA28DF234C2AD700596188 /* ViewController.swift in Sources */,
+				D5CA2903234C496200596188 /* UIViewExtension.swift in Sources */,
 				D5CA28DB234C2AD700596188 /* AppDelegate.swift in Sources */,
+				D5CA2902234C496200596188 /* UIColorExtension.swift in Sources */,
+				D5CA28F1234C2C6A00596188 /* StocksVC.swift in Sources */,
 				D5CA28DD234C2AD700596188 /* SceneDelegate.swift in Sources */,
+				D5CA2905234C6B2400596188 /* SearchWidget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		D5CA28E0234C2AD700596188 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D5CA28E1234C2AD700596188 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		D5CA28E5234C2ADE00596188 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
