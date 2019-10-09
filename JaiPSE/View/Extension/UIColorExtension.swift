@@ -15,6 +15,6 @@ extension UIColor {
     }
     
     static let mainContainerBgColor = UIColor.rgb(18, 20, 33)
-    static let searchContainerBgColor = UIColor.lightGray
+    static let searchContainerBgColor = UIColor.white
     static let cellBgColor = UIColor.rgb(24, 30, 45)
 }

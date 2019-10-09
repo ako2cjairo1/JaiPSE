@@ -17,7 +17,7 @@ class StocksVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor.mainContainerBgColor
+        view.backgroundColor = .mainContainerBgColor
         
         setupViews()
     }
@@ -27,6 +27,8 @@ class StocksVC: UIViewController {
         return .darkContent
     }
     
+    
+    // MARK: - Functions
     fileprivate func setupViews() {
         let searchView = SearchWidget()
         

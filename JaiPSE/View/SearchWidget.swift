@@ -11,71 +11,97 @@ import UIKit
 class SearchWidget: UIView {
     
     // MARK: - Properties
+    private var isSearching: Bool = false
     
     private let searchTitle: UILabel = {
         let label = UILabel()
         label.text = "Stocks"
-        label.font = UIFont.systemFont(ofSize: 40, weight: .heavy)
         label.textColor = .darkText
+        
         return label
     }()
     
     private let searchButton: UIButton = {
         let button = UIButton()
-        let img = UIImage(systemName: "magnifyingglass.circle.fill")
-        button.setBackgroundImage(img, for: .normal)
         button.addTarget(self, action: #selector(seachButtonPressed), for: .touchUpInside)
         button.tintColor = .darkGray
+        
         return button
+    }()
+    
+    private let searchBar: UISearchTextField = {
+        let searchBar = UISearchTextField()
+        searchBar.tintColor = .darkGray
+        searchBar.placeholder = "Company name / Stock Code"
+        
+        let img = UIImage(systemName: "magnifyingglass")
+        searchBar.alpha = 0
+        searchBar.becomeFirstResponder()
+        
+        return searchBar
     }()
     
     // MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         superView()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
         superView()
     }
     
     // MARK: - Selectors
     
     @objc func seachButtonPressed() {
-        // TODO: seems not animating :(
-        UIView.animate(withDuration: 0.5) {
+        
+        toggleSearchBar()
+
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
             self.layoutIfNeeded()
-            self.searchTitle.font = UIFont.systemFont(ofSize: 20, weight: .regular)
-            self.searchTitle.anchorExt(leading: self.leadingAnchor, paddingLead: 16,
-                                       bottom: self.bottomAnchor, paddingBottom: 40)
-        }
+        })
     }
     
     // MARK: - Functions
     
     private func superView() {
-        backgroundColor = UIColor.searchContainerBgColor
+        backgroundColor = .searchContainerBgColor
         layer.cornerRadius = 25
-        layer.borderWidth = 5
-        layer.borderColor = UIColor.white.cgColor
         // shadow
         layer.shadowOpacity = 1
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowRadius = 20
+        layer.shadowColor = UIColor.white.cgColor
+        layer.shadowRadius = 15
 
         addSubview(searchTitle)
-        searchTitle.anchorExt(leading: leadingAnchor, paddingLead: 16,
-                              bottom: bottomAnchor, paddingBottom: 20)
+        searchTitle.anchorExt(top: topAnchor, paddingTop: 65,
+                              leading: leadingAnchor, paddingLead: 16)
         
         addSubview(searchButton)
-        searchButton.anchorExt(bottom: bottomAnchor, paddingBottom: 20,
+        searchButton.anchorExt(bottom: bottomAnchor, paddingBottom: 15,
                                trailing: trailingAnchor, paddingTrail: 16,
-                               width: 45,
-                               height: 45)
+                               width: 40, height: 40)
+        
+        addSubview(searchBar)
+        searchBar.anchorExt(top: searchTitle.bottomAnchor, paddingTop: 3,
+                            leading: leadingAnchor, paddingLead: 17,
+                            bottom: bottomAnchor, paddingBottom: 18,
+                            trailing: searchButton.leadingAnchor, paddingTrail: 7)
+        
+        toggleSearchBar()
+    }
+    
+    private func toggleSearchBar() {
+        let fontSize: CGFloat = (isSearching ? 20 : 65)
+        searchTitle.font = UIFont(descriptor: UIFontDescriptor(name: "Pacifico-Regular", size: fontSize), size: fontSize)
+    
+        let img = UIImage(systemName: (isSearching ? "xmark.circle" : "magnifyingglass.circle.fill"))
+        searchButton.setBackgroundImage(img, for: .normal)
+        searchBar.alpha = isSearching ? 1 : 0
+        
+        isSearching = !isSearching
     }
 
 }
+
