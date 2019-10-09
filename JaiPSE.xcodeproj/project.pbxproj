@@ -16,6 +16,7 @@
 		D5CA2903234C496200596188 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA2901234C496200596188 /* UIViewExtension.swift */; };
 		D5CA2905234C6B2400596188 /* SearchWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA2904234C6B2400596188 /* SearchWidget.swift */; };
 		D5EC453B234DCD9800485D51 /* StocksHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC453A234DCD9800485D51 /* StocksHeaderView.swift */; };
+		D5EC453E234DDDE100485D51 /* StocksCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC453D234DDDE100485D51 /* StocksCellView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		D5CA2901234C496200596188 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		D5CA2904234C6B2400596188 /* SearchWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWidget.swift; sourceTree = "<group>"; };
 		D5EC453A234DCD9800485D51 /* StocksHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksHeaderView.swift; sourceTree = "<group>"; };
+		D5EC453D234DDDE100485D51 /* StocksCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksCellView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 		D5CA28F2234C2D9100596188 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D5EC453D234DDDE100485D51 /* StocksCellView.swift */,
 				D5EC453A234DCD9800485D51 /* StocksHeaderView.swift */,
 				D5CA28FB234C48CA00596188 /* Extension */,
 				D5EC453C234DDC0A00485D51 /* Widget */,
@@ -179,6 +182,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5CA2903234C496200596188 /* UIViewExtension.swift in Sources */,
+				D5EC453E234DDDE100485D51 /* StocksCellView.swift in Sources */,
 				D5CA28DB234C2AD700596188 /* AppDelegate.swift in Sources */,
 				D5CA2902234C496200596188 /* UIColorExtension.swift in Sources */,
 				D5CA28F1234C2C6A00596188 /* StocksController.swift in Sources */,
