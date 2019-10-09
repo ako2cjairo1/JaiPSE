@@ -20,7 +20,7 @@ class StocksController: UICollectionViewController {
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.backgroundColor = .mainContainerBgColor
         
-        collectionView.register(StocksHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: StocksHeader.self))
+        collectionView.register(StocksHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: StocksHeaderView.self))
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -37,7 +37,7 @@ class StocksController: UICollectionViewController {
 extension StocksController {
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: StocksHeader.self), for: indexPath) as! StocksHeader
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: StocksHeaderView.self), for: indexPath) as! StocksHeaderView
         
         return header
     }

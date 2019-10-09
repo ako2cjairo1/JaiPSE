@@ -8,10 +8,10 @@
 
 import UIKit
 
-class StocksHeader: UICollectionReusableView {
+class StocksHeaderView: UICollectionReusableView {
     
     // MARK: - Properties
-    
+    var searchView = SearchWidget()
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -25,14 +25,10 @@ class StocksHeader: UICollectionReusableView {
     }
     
     // MARK: - Functions
-    
     fileprivate func setupViews() {
-        let searchView = SearchWidget()
-        
         addSubview(searchView)
         
         // Constraints
         searchView.anchorExt(top: topAnchor, paddingTop: -5, leading: leadingAnchor, trailing: trailingAnchor, height: 140)
     }
-    
 }
