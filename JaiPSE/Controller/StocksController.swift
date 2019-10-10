@@ -17,20 +17,20 @@ class StocksController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        collectionView.delegate = self
-//        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
 
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.backgroundColor = .mainContainerBgColor
+        // TODO: Fix the searchbar sticking to header when scrolling down
+        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            // Making sure searchbar sticks to header
+            layout.sectionHeadersPinToVisibleBounds = true
+        }
         
         // Custom controls/views registration
         collectionView.register(StocksHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: StocksHeaderView.self))
-        
         collectionView.register(StocksCellView.self, forCellWithReuseIdentifier: String(describing: StocksCellView.self))
-        
-        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.sectionHeadersPinToVisibleBounds = true
-        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -39,27 +39,37 @@ class StocksController: UICollectionViewController {
     }
 }
 
-// MARK: - UICollectionViewDelegate/Datasource
+// MARK: - SearchWidget Delegate (Custom)
+extension StocksController: SearchDelegate {
+    func searchButtonTapped() {
+        print("DEBUG: Searh delgate is active...")
+    }
+}
+
+// MARK: - CollectionView Delegate/Datasource
 extension StocksController {
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: StocksHeaderView.self), for: indexPath) as! StocksHeaderView
+        
+        header.searchWidget.delegate = self
+        
         return header
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         return StocksModel.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: StocksCellView.self), for: indexPath) as! StocksCellView
-//        cell.layer.borderColor = UIColor.red.cgColor
-//        cell.layer.borderWidth = 0.5
+        
         return cell
     }
 }
 
-// MARK: - UICollectionViewDelegateFlowLayout
+// MARK: - CollectionView Flowlayout
 extension StocksController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
@@ -74,14 +84,17 @@ extension StocksController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
         return UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        
         return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        
         return 1
     }
 }

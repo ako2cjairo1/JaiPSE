@@ -11,7 +11,7 @@ import UIKit
 class StocksHeaderView: UICollectionReusableView {
     
     // MARK: - Properties
-    var searchView = SearchWidget()
+    var searchWidget = SearchWidget()
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -26,9 +26,9 @@ class StocksHeaderView: UICollectionReusableView {
     
     // MARK: - Functions
     fileprivate func setupViews() {
-        addSubview(searchView)
+        addSubview(searchWidget)
         
         // Constraints
-        searchView.anchorExt(top: topAnchor, paddingTop: -5, leading: leadingAnchor, trailing: trailingAnchor, height: 140)
+        searchWidget.anchorExt(top: topAnchor, paddingTop: -5, leading: leadingAnchor, trailing: trailingAnchor, height: 140)
     }
 }

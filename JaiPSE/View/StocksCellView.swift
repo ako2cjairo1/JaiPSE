@@ -12,7 +12,7 @@ class StocksCellView: UICollectionViewCell {
     
     // MARK: - Properties
     // TODO: make this to a data model property
-    var testVariable: String?
+    var StockModel: Any!
     
     lazy var cellContainerView: UIView = {
         let view = UIView()
@@ -45,9 +45,6 @@ class StocksCellView: UICollectionViewCell {
         label.textAlignment = .center
         label.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         
-//        label.layer.borderWidth = 0.5
-//        label.layer.borderColor = UIColor.white.cgColor
-        
         return label
     }()
     
@@ -73,7 +70,6 @@ class StocksCellView: UICollectionViewCell {
         label.text = "1234.00"
         label.textAlignment = .center
         label.textColor = #colorLiteral(red: 0, green: 0.6500428082, blue: 0, alpha: 1) // TODO: Changes depending on prev opening price
-        
         
         return label
     }()
@@ -150,13 +146,12 @@ class StocksCellView: UICollectionViewCell {
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         label.text = "123456.78"
         label.textAlignment = .left
-        label.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1) // TODO: Changes depending on prev opening price
+        label.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         
         return label
     }()
     
     lazy var volumeImageView: UIImageView = {
-        // TODO: Changes depending on prev opening price
         guard let img = UIImage(systemName: "waveform.path.badge.plus") else { return UIImageView() }
         
         let iv = UIImageView(image: img)
@@ -165,7 +160,6 @@ class StocksCellView: UICollectionViewCell {
         
         return iv
     }()
-    
     
     // MARK: - Init
     override init(frame: CGRect) {
