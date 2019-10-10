@@ -31,18 +31,36 @@ class StocksController: UICollectionViewController {
         // Custom controls/views registration
         collectionView.register(StocksHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: StocksHeaderView.self))
         collectionView.register(StocksCellView.self, forCellWithReuseIdentifier: String(describing: StocksCellView.self))
+        
+        setupFloatingActionButton()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
          // Make the status bar fonts/etc. to use light colors
         return .darkContent
     }
+    
+    private func setupFloatingActionButton() {
+        let actionButton = FloatingActionButtonWidget()
+        actionButton.delegate = self
+        
+        view.addSubview(actionButton)
+        actionButton.anchorExt(bottom: view.bottomAnchor, paddingBottom: 40,
+                               trailing: view.trailingAnchor, paddingTrail: 30,
+                               width: 65, height: 65)
+    }
 }
 
 // MARK: - SearchWidget Delegate (Custom)
-extension StocksController: SearchDelegate {
+extension StocksController: SearchButtonDelegate {
     func searchButtonTapped() {
-        print("DEBUG: Searh delgate is active...")
+        print("DEBUG: Searh delegate is active from StocksController...")
+    }
+}
+
+extension StocksController: FloatingActionButtonDelegate {
+    func floatingActionButtonTapped() {
+        print("DEBUG: Floating button delegate is active from StocksController...")
     }
 }
 

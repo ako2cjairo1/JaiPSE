@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D534E89B234F361400BACEDC /* FloatingActionButtonWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E89A234F361400BACEDC /* FloatingActionButtonWidget.swift */; };
 		D5CA28DB234C2AD700596188 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA28DA234C2AD700596188 /* AppDelegate.swift */; };
 		D5CA28DD234C2AD700596188 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA28DC234C2AD700596188 /* SceneDelegate.swift */; };
 		D5CA28E4234C2ADE00596188 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5CA28E3234C2ADE00596188 /* Assets.xcassets */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D534E89A234F361400BACEDC /* FloatingActionButtonWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingActionButtonWidget.swift; sourceTree = "<group>"; };
 		D5CA28D7234C2AD700596188 /* JaiPSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JaiPSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5CA28DA234C2AD700596188 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D5CA28DC234C2AD700596188 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				D5CA2904234C6B2400596188 /* SearchWidget.swift */,
+				D534E89A234F361400BACEDC /* FloatingActionButtonWidget.swift */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -184,6 +187,7 @@
 				D5CA2903234C496200596188 /* UIViewExtension.swift in Sources */,
 				D5EC453E234DDDE100485D51 /* StocksCellView.swift in Sources */,
 				D5CA28DB234C2AD700596188 /* AppDelegate.swift in Sources */,
+				D534E89B234F361400BACEDC /* FloatingActionButtonWidget.swift in Sources */,
 				D5CA2902234C496200596188 /* UIColorExtension.swift in Sources */,
 				D5CA28F1234C2C6A00596188 /* StocksController.swift in Sources */,
 				D5CA28DD234C2AD700596188 /* SceneDelegate.swift in Sources */,

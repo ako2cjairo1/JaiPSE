@@ -29,8 +29,8 @@ class StocksCellView: UICollectionViewCell {
         view.addSubview(symbolLabel)
         view.addSubview(nameLabel)
         view.addSubview(priceLabel)
-        view.addSubview(percentageStack)
-        view.addSubview(volumeStack)
+        view.addSubview(percentStackView)
+        view.addSubview(volumeStackView)
         
         return view
     }()
@@ -74,7 +74,7 @@ class StocksCellView: UICollectionViewCell {
         return label
     }()
     
-    lazy var percentageStack: UIStackView = {
+    lazy var percentStackView: UIStackView = {
         let stack = UIStackView()
         
         stack.axis = .horizontal
@@ -118,7 +118,7 @@ class StocksCellView: UICollectionViewCell {
         return iv
     }()
     
-    lazy var volumeStack: UIStackView = {
+    lazy var volumeStackView: UIStackView = {
         let stack = UIStackView()
         
         stack.axis = .horizontal
@@ -174,6 +174,7 @@ class StocksCellView: UICollectionViewCell {
     
     // MARK: - Lifecycle
     private func setupView() {
+        // 2 cells per row
         let cellQuadrantWidth = (frame.width / 2) - 20
         
         addSubview(cellContainerView)
@@ -193,11 +194,11 @@ class StocksCellView: UICollectionViewCell {
                              trailing: cellContainerView.trailingAnchor, paddingTrail: 8,
                              width: cellQuadrantWidth)
         
-        percentageStack.anchorExt(top: priceLabel.bottomAnchor, paddingTop: 10,
+        percentStackView.anchorExt(top: priceLabel.bottomAnchor, paddingTop: 10,
                                   trailing: cellContainerView.trailingAnchor, paddingTrail: 8,
                                   width: cellQuadrantWidth)
         
-        volumeStack.anchorExt(top: percentageStack.bottomAnchor, paddingTop: 5,
+        volumeStackView.anchorExt(top: percentStackView.bottomAnchor, paddingTop: 5,
                                   trailing: cellContainerView.trailingAnchor, paddingTrail: 8,
                                   width: cellQuadrantWidth)
     }

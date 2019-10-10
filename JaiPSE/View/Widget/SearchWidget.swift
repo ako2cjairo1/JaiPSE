@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SearchDelegate: class {
+protocol SearchButtonDelegate {
     func searchButtonTapped()
 }
 
@@ -16,7 +16,7 @@ class SearchWidget: UIView {
     
     // MARK: - Properties
     private var isSearching: Bool = false
-    var delegate: SearchDelegate?
+    var delegate: SearchButtonDelegate?
     
     private let searchTitle: UILabel = {
         let label = UILabel()
