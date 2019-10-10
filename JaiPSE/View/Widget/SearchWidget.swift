@@ -42,7 +42,6 @@ class SearchWidget: UIView {
     }()
     
     // MARK: - Init
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         superView()
@@ -54,7 +53,6 @@ class SearchWidget: UIView {
     }
     
     // MARK: - Selectors
-    
     @objc func seachButtonPressed() {
         
         toggleSearchBar()
@@ -64,15 +62,15 @@ class SearchWidget: UIView {
         })
     }
     
-    // MARK: - Functions
-    
+    // MARK: - Lifecycle
     private func superView() {
         backgroundColor = .searchContainerBgColor
         layer.cornerRadius = 25
         // shadow
-        layer.shadowOpacity = 1
+        layer.shadowOffset = CGSize(width: 0, height: 3)
+        layer.shadowOpacity = 0.5
         layer.shadowColor = UIColor.white.cgColor
-        layer.shadowRadius = 15
+        layer.shadowRadius = 10
 
         addSubview(searchTitle)
         searchTitle.anchorExt(top: topAnchor, paddingTop: 65,
