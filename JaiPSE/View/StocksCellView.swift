@@ -12,7 +12,15 @@ class StocksCellView: UICollectionViewCell {
     
     // MARK: - Properties
     // TODO: make this to a data model property
-    var StockModel: Any!
+    var stockData: StockViewModel! {
+        didSet {
+            symbolLabel.text = stockData.symbol
+            nameLabel.text = stockData.name.uppercased()
+            priceLabel.text = "\(stockData.price)"
+            percentChangeLabel.text = "\(stockData.percentChange)"
+            volumeLabel.text = "\(stockData.volume)"
+        }
+    }
     
     lazy var cellContainerView: UIView = {
         let view = UIView()
@@ -68,7 +76,7 @@ class StocksCellView: UICollectionViewCell {
         label.contentMode = .scaleAspectFill
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         label.text = "1234.00"
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0, green: 0.6500428082, blue: 0, alpha: 1) // TODO: Changes depending on prev opening price
         
         return label

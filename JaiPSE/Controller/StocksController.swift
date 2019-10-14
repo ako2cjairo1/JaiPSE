@@ -16,7 +16,7 @@ enum actionType: String {
 class StocksController: UICollectionViewController {
 
     // MARK: - Properties
-    var StocksModel:[String] = ["Test1", "Test2" , "Test3", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10", "Test11", "Test12", "Test13", "Test14", "Test15", "Test16", "Test17", "Test18"]
+    lazy var StocksViewModel:[StockViewModel] = []
     
     var headerSearchBar = StocksHeaderView()
     var floatingActionButton = FloatingActionButtonWidget()
@@ -26,6 +26,8 @@ class StocksController: UICollectionViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        fetchJsonData()
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -50,6 +52,15 @@ class StocksController: UICollectionViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
          // Make the status bar fonts/etc. to use light colors
         return .darkContent
+    }
+    
+    private func fetchJsonData() {
+        dataStore.shared.fetchData(completion: { (data, error) in
+            DispatchQueue.main.async {
+                self.StocksViewModel = data
+                self.collectionView.reloadData()
+            }
+        })
     }
     
     private func setupFloatingActionButton() {
@@ -134,12 +145,12 @@ extension StocksController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return StocksModel.count
+        return StocksViewModel.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: StocksCellView.self), for: indexPath) as! StocksCellView
-        
+        cell.stockData = StocksViewModel[indexPath.row]
         return cell
     }
 }
@@ -172,4 +183,7 @@ extension StocksController: UICollectionViewDelegateFlowLayout {
         
         return 1
     }
+}
+
+extension StocksController: UISearchBarDelegate {
 }

@@ -13,8 +13,8 @@ class SearchResultTableView: UIView {
     // MARK: - Properties
     // TODO: update this property using the actual data model
     var searchResult: [Stock] = [
-        Stock(name: "Jollibee", price: StockPrice(currency: "PHP", amount: 231.20), percentChange: 0.96, volume: 186910, symbol: "JFC"),
-        Stock(name: "WILCON DEPOT", price: StockPrice(currency: "PHP", amount: 6.78), percentChange: -0.12, volume: 307400, symbol: "WLCON")]
+        Stock(name: "Jollibee", price: StockPrice(currency: "PHP", amount: 231.20), percent_change: 0.96, volume: 186910, symbol: "JFC"),
+        Stock(name: "WILCON DEPOT", price: StockPrice(currency: "PHP", amount: 6.78), percent_change: -0.12, volume: 307400, symbol: "WLCON")]
     
     lazy var numberOfResult: UILabel = {
         let label = UILabel()
