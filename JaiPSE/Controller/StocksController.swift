@@ -8,10 +8,20 @@
 
 import UIKit
 
+enum actionType: String {
+    case add
+    case search
+}
+
 class StocksController: UICollectionViewController {
 
     // MARK: - Properties
     var StocksModel:[String] = ["Test1", "Test2" , "Test3", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10", "Test11", "Test12", "Test13", "Test14", "Test15", "Test16", "Test17", "Test18"]
+    
+    var headerSearchBar = StocksHeaderView()
+    var floatingActionButton = FloatingActionButtonWidget()
+    var searchResultView = SearchResultTableView()
+    var searchResultViewTopAnchor = NSLayoutConstraint()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -32,6 +42,8 @@ class StocksController: UICollectionViewController {
         collectionView.register(StocksHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: StocksHeaderView.self))
         collectionView.register(StocksCellView.self, forCellWithReuseIdentifier: String(describing: StocksCellView.self))
         
+        setupSearchResultTabvlewView()
+        
         setupFloatingActionButton()
     }
     
@@ -41,26 +53,71 @@ class StocksController: UICollectionViewController {
     }
     
     private func setupFloatingActionButton() {
-        let actionButton = FloatingActionButtonWidget()
-        actionButton.delegate = self
+        floatingActionButton.delegate = self
         
-        view.addSubview(actionButton)
-        actionButton.anchorExt(bottom: view.bottomAnchor, paddingBottom: 40,
+        view.addSubview(floatingActionButton)
+        floatingActionButton.anchorExt(bottom: view.bottomAnchor, paddingBottom: 40,
                                trailing: view.trailingAnchor, paddingTrail: 30,
-                               width: 65, height: 65)
+                               width: 50, height: 50)
+        floatingActionButton.imageView?.sizeToFit()
+    }
+    
+    private func setupSearchResultTabvlewView() {
+        view.addSubview(searchResultView)
+        
+        searchResultViewTopAnchor = searchResultView.topAnchor.constraint(equalTo: view.topAnchor, constant: 180)
+        searchResultViewTopAnchor.isActive = false
+        searchResultView.anchorExt(leading: view.leadingAnchor,
+                                    bottom: view.bottomAnchor,
+                                    trailing: view.trailingAnchor)
+        searchResultViewTopAnchor.isActive = false
+    }
+    
+    private func toggleActionWithAnimation() {
+        if floatingActionButton.toggleFloatingButton {
+            self.searchResultViewTopAnchor.isActive = true
+
+            // prevent search bar to toggle when floating action butten is currently in-use
+            if headerSearchBar.searchWidget.isSearching {
+                headerSearchBar.searchWidget.toggleSearchBar()
+            }
+        } else {
+            self.searchResultViewTopAnchor.isActive = false
+
+            // prevent search bar to toggle floating action button is not in use.
+            if !headerSearchBar.searchWidget.isSearching {
+                headerSearchBar.searchWidget.toggleSearchBar()
+            }
+        }
+
+        UIView.animate(withDuration: 0.3) {
+            self.searchResultView.layoutIfNeeded()
+        }
     }
 }
 
 // MARK: - SearchWidget Delegate (Custom)
 extension StocksController: SearchButtonDelegate {
     func searchButtonTapped() {
-        print("DEBUG: Searh delegate is active from StocksController...")
+        
+        if floatingActionButton.toggleFloatingButton {
+            self.searchResultViewTopAnchor.isActive = false
+
+            // prevent search bar to toggle when floating action butten is currently in-use
+            headerSearchBar.searchWidget.isSearching = false
+            
+            UIView.animate(withDuration: 0.3) {
+                self.searchResultView.layoutIfNeeded()
+            }
+            print("is using floating buton...")
+        }
     }
 }
 
+// MARK: - Floating Action button delegate (Custom)
 extension StocksController: FloatingActionButtonDelegate {
     func floatingActionButtonTapped() {
-        print("DEBUG: Floating button delegate is active from StocksController...")
+         toggleActionWithAnimation()
     }
 }
 
@@ -68,11 +125,11 @@ extension StocksController: FloatingActionButtonDelegate {
 extension StocksController {
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: StocksHeaderView.self), for: indexPath) as! StocksHeaderView
+        headerSearchBar = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: StocksHeaderView.self), for: indexPath) as! StocksHeaderView
         
-        header.searchWidget.delegate = self
+        headerSearchBar.searchWidget.delegate = self
         
-        return header
+        return headerSearchBar
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

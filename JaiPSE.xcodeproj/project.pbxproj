@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		D534E89B234F361400BACEDC /* FloatingActionButtonWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E89A234F361400BACEDC /* FloatingActionButtonWidget.swift */; };
+		D534E8A0235066D500BACEDC /* StockModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E89F235066D500BACEDC /* StockModel.swift */; };
+		D534E8AD2351FA0F00BACEDC /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8AB2351FA0F00BACEDC /* SearchResultCell.swift */; };
+		D534E8AF2351FB5B00BACEDC /* SearchResultTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8AE2351FB5B00BACEDC /* SearchResultTableView.swift */; };
 		D5CA28DB234C2AD700596188 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA28DA234C2AD700596188 /* AppDelegate.swift */; };
 		D5CA28DD234C2AD700596188 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA28DC234C2AD700596188 /* SceneDelegate.swift */; };
 		D5CA28E4234C2ADE00596188 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5CA28E3234C2ADE00596188 /* Assets.xcassets */; };
@@ -22,6 +25,9 @@
 
 /* Begin PBXFileReference section */
 		D534E89A234F361400BACEDC /* FloatingActionButtonWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingActionButtonWidget.swift; sourceTree = "<group>"; };
+		D534E89F235066D500BACEDC /* StockModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockModel.swift; sourceTree = "<group>"; };
+		D534E8AB2351FA0F00BACEDC /* SearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
+		D534E8AE2351FB5B00BACEDC /* SearchResultTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultTableView.swift; sourceTree = "<group>"; };
 		D5CA28D7234C2AD700596188 /* JaiPSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JaiPSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5CA28DA234C2AD700596188 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D5CA28DC234C2AD700596188 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +53,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D534E89E2350669D00BACEDC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D534E89F235066D500BACEDC /* StockModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D534E8A5235099F700BACEDC /* SearchResult */ = {
+			isa = PBXGroup;
+			children = (
+				D534E8AE2351FB5B00BACEDC /* SearchResultTableView.swift */,
+				D534E8AB2351FA0F00BACEDC /* SearchResultCell.swift */,
+			);
+			path = SearchResult;
+			sourceTree = "<group>";
+		};
 		D5CA28CE234C2AD700596188 = {
 			isa = PBXGroup;
 			children = (
@@ -66,6 +89,7 @@
 		D5CA28D9234C2AD700596188 /* JaiPSE */ = {
 			isa = PBXGroup;
 			children = (
+				D534E89E2350669D00BACEDC /* Model */,
 				D5CA28F2234C2D9100596188 /* View */,
 				D5CA28EF234C2BCE00596188 /* Controller */,
 				D5CA28DA234C2AD700596188 /* AppDelegate.swift */,
@@ -90,6 +114,7 @@
 			children = (
 				D5EC453D234DDDE100485D51 /* StocksCellView.swift */,
 				D5EC453A234DCD9800485D51 /* StocksHeaderView.swift */,
+				D534E8A5235099F700BACEDC /* SearchResult */,
 				D5CA28FB234C48CA00596188 /* Extension */,
 				D5EC453C234DDC0A00485D51 /* Widget */,
 			);
@@ -185,13 +210,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5CA2903234C496200596188 /* UIViewExtension.swift in Sources */,
+				D534E8A0235066D500BACEDC /* StockModel.swift in Sources */,
 				D5EC453E234DDDE100485D51 /* StocksCellView.swift in Sources */,
 				D5CA28DB234C2AD700596188 /* AppDelegate.swift in Sources */,
 				D534E89B234F361400BACEDC /* FloatingActionButtonWidget.swift in Sources */,
 				D5CA2902234C496200596188 /* UIColorExtension.swift in Sources */,
+				D534E8AF2351FB5B00BACEDC /* SearchResultTableView.swift in Sources */,
 				D5CA28F1234C2C6A00596188 /* StocksController.swift in Sources */,
 				D5CA28DD234C2AD700596188 /* SceneDelegate.swift in Sources */,
 				D5CA2905234C6B2400596188 /* SearchWidget.swift in Sources */,
+				D534E8AD2351FA0F00BACEDC /* SearchResultCell.swift in Sources */,
 				D5EC453B234DCD9800485D51 /* StocksHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -82,15 +82,12 @@ class StocksCellView: UICollectionViewCell {
         stack.distribution = .equalCentering
         
         stack.addArrangedSubview(percentChangeImageView)
-        percentChangeImageView.anchorExt(top: stack.topAnchor,
-                                         leading: stack.leadingAnchor,
-                                         bottom: stack.bottomAnchor,
-                                         width: 25, height: 25)
-        
         stack.addArrangedSubview(percentChangeLabel)
-        percentChangeLabel.anchorExt(top: stack.topAnchor,
-                                     leading: percentChangeImageView.trailingAnchor, paddingLead: 5,
-                                     bottom: stack.bottomAnchor)
+        
+        percentChangeImageView.anchorExt(top: stack.topAnchor, leading: stack.leadingAnchor,
+                                         bottom: stack.bottomAnchor, width: 25, height: 25)
+        percentChangeLabel.anchorExt(top: stack.topAnchor, leading: percentChangeImageView.trailingAnchor,
+                                     paddingLead: 5, bottom: stack.bottomAnchor)
         return stack
     }()
     

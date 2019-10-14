@@ -15,7 +15,7 @@ protocol SearchButtonDelegate {
 class SearchWidget: UIView {
     
     // MARK: - Properties
-    private var isSearching: Bool = false
+    var isSearching: Bool = false
     var delegate: SearchButtonDelegate?
     
     private let searchTitle: UILabel = {
@@ -35,15 +35,15 @@ class SearchWidget: UIView {
     }()
     
     private let searchBar: UISearchTextField = {
-        let searchBar = UISearchTextField()
-        searchBar.tintColor = .darkGray
-        searchBar.placeholder = "Company name / Stock Code"
+        let searchText = UISearchTextField()
+        searchText.tintColor = .darkGray
+        searchText.placeholder = "Company name / Stock Code"
         
         let img = UIImage(systemName: "magnifyingglass")
-        searchBar.alpha = 0
-        searchBar.becomeFirstResponder()
+        searchText.alpha = 0
+        searchText.becomeFirstResponder()
         
-        return searchBar
+        return searchText
     }()
     
     // MARK: - Init
@@ -60,13 +60,12 @@ class SearchWidget: UIView {
     }
     
     // MARK: - Selectors
-    @objc func searchStock() {
+    @objc
+    func searchStock() {
         toggleSearchBar()
         
-        UIView.animate(withDuration: 0.3, animations: {
-            self.layoutIfNeeded()
-        }) { (isSuccessful) in
-            self.delegate?.searchButtonTapped()
+        if let delegate = delegate {
+            delegate.searchButtonTapped()
         }
     }
     
@@ -104,16 +103,22 @@ class SearchWidget: UIView {
                             trailing: searchButton.leadingAnchor, paddingTrail: 7)
     }
     
-    private func toggleSearchBar() {
-        let fontSize: CGFloat = (isSearching ? 20 : 65)
+    func toggleSearchBar() {
+        let fontSize: CGFloat = (isSearching ? 20 : 40)
         searchTitle.font = UIFont(descriptor: UIFontDescriptor(name: "Pacifico-Regular", size: fontSize), size: fontSize)
     
         let img = UIImage(systemName: (isSearching ? "xmark.circle" : "magnifyingglass.circle.fill"))
         searchButton.setBackgroundImage(img, for: .normal)
         searchBar.alpha = isSearching ? 1 : 0
         
+        animate()
         isSearching = !isSearching
     }
-
+    
+    private func animate() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.layoutIfNeeded()
+        })
+    }
 }
 

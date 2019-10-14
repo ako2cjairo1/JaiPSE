@@ -15,30 +15,31 @@ protocol FloatingActionButtonDelegate {
 class FloatingActionButtonWidget: UIButton {
     
     // MARK: - Properties
+    var toggleFloatingButton: Bool = false
     var delegate: FloatingActionButtonDelegate?
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupView()
+        setupButtonView()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         
-        setupView()
+        setupButtonView()
     }
     
     // MARK: - Lifecycle
-    private func setupView() {
+    private func setupButtonView() {
         guard let img = UIImage(systemName: "plus") else { return }
         
         setImage(img, for: .normal)
         tintColor = .white
         backgroundColor = #colorLiteral(red: 0.9027048945, green: 0.1456339359, blue: 0.1390642822, alpha: 1)
         
-        layer.frame = CGRect(x: 0, y: 0, width: 65, height: 65)
+        layer.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         layer.cornerRadius = (frame.height / 2)
         layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         layer.shadowOffset = CGSize(width: 0, height: 10)
@@ -48,7 +49,9 @@ class FloatingActionButtonWidget: UIButton {
     }
     
     // MARK: - Selectors
-    @objc func tapAction() {
+    @objc
+    func tapAction() {
+        toggleFloatingButton = !toggleFloatingButton
         delegate?.floatingActionButtonTapped()
     }
 
