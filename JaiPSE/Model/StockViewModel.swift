@@ -16,7 +16,7 @@ struct StockViewModel {
     init(stock: Stock) {
         self.name = stock.name
         self.price = stock.price.amount
-        self.percentChange = stock.percent_change
+        self.percentChange = stock.percentChange
         self.volume = stock.volume
         self.symbol = stock.symbol
     }

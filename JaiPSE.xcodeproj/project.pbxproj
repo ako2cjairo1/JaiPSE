@@ -13,7 +13,7 @@
 		D534E8AF2351FB5B00BACEDC /* SearchResultTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8AE2351FB5B00BACEDC /* SearchResultTableView.swift */; };
 		D534E8B1235423C600BACEDC /* StockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8B0235423C600BACEDC /* StockViewModel.swift */; };
 		D534E8B3235428C900BACEDC /* StockOfflineData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8B2235428C900BACEDC /* StockOfflineData.swift */; };
-		D534E8B72354345E00BACEDC /* dataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8B62354345E00BACEDC /* dataStore.swift */; };
+		D534E8B72354345E00BACEDC /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8B62354345E00BACEDC /* NetworkManager.swift */; };
 		D5CA28DB234C2AD700596188 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA28DA234C2AD700596188 /* AppDelegate.swift */; };
 		D5CA28DD234C2AD700596188 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA28DC234C2AD700596188 /* SceneDelegate.swift */; };
 		D5CA28E4234C2ADE00596188 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5CA28E3234C2ADE00596188 /* Assets.xcassets */; };
@@ -33,7 +33,7 @@
 		D534E8AE2351FB5B00BACEDC /* SearchResultTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultTableView.swift; sourceTree = "<group>"; };
 		D534E8B0235423C600BACEDC /* StockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockViewModel.swift; sourceTree = "<group>"; };
 		D534E8B2235428C900BACEDC /* StockOfflineData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockOfflineData.swift; sourceTree = "<group>"; };
-		D534E8B62354345E00BACEDC /* dataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dataStore.swift; sourceTree = "<group>"; };
+		D534E8B62354345E00BACEDC /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		D5CA28D7234C2AD700596188 /* JaiPSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JaiPSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5CA28DA234C2AD700596188 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D5CA28DC234C2AD700596188 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,7 +89,7 @@
 		D534E8B52354344300BACEDC /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				D534E8B62354345E00BACEDC /* dataStore.swift */,
+				D534E8B62354345E00BACEDC /* NetworkManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -235,7 +235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D534E8B3235428C900BACEDC /* StockOfflineData.swift in Sources */,
-				D534E8B72354345E00BACEDC /* dataStore.swift in Sources */,
+				D534E8B72354345E00BACEDC /* NetworkManager.swift in Sources */,
 				D5CA2903234C496200596188 /* UIViewExtension.swift in Sources */,
 				D534E8A0235066D500BACEDC /* StockAPIModel.swift in Sources */,
 				D534E8B1235423C600BACEDC /* StockViewModel.swift in Sources */,

@@ -6,24 +6,33 @@
 //  Copyright © 2019 ako2cjairo. All rights reserved.
 //
 
-struct StockAPIModel: Decodable {
-    var stock: [Stock]
-    var as_of: String
+struct StockAPIModel: Codable {
+    let stock: [Stock]
+    let asOf: String
+
+    private enum CodingKeys: String, CodingKey {
+        case stock
+        case asOf = "as_of"
+    }
+}
+
+struct Stock: Codable {
+    let name: String
+    let price: StockPrice
+    let percentChange: Float
+    let volume: Double
+    let symbol: String
     
-//    private enum CodingKeys: String, CodingKey {
-//        case asOf = "as_of"
-//    }
+    private enum CodingKeys: String, CodingKey {
+        case name
+        case price
+        case percentChange = "percent_change"
+        case volume
+        case symbol
+    }
 }
 
-struct Stock: Decodable {
-    var name: String
-    var price: StockPrice
-    var percent_change: Float
-    var volume: Double
-    var symbol: String
-}
-
-struct StockPrice: Decodable {
-    var currency: String
-    var amount: Float
+struct StockPrice: Codable {
+    let currency: String
+    let amount: Float
 }

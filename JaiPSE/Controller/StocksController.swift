@@ -8,15 +8,24 @@
 
 import UIKit
 
-enum actionType: String {
+enum ActionType: String {
     case add
     case search
+}
+
+enum UrlSource: String {
+    case api = "http://phisix-api3.appspot.com/stocks.json"
+    case offline = ""
 }
 
 class StocksController: UICollectionViewController {
 
     // MARK: - Properties
-    lazy var StocksViewModel:[StockViewModel] = []
+    var stocksData = [StockViewModel]() {
+        didSet {
+            self.collectionView.reloadData()
+        }
+    }
     
     var headerSearchBar = StocksHeaderView()
     var floatingActionButton = FloatingActionButtonWidget()
@@ -27,7 +36,7 @@ class StocksController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fetchJsonData()
+        fetchJsonData(UrlSource.api.rawValue)
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -44,7 +53,7 @@ class StocksController: UICollectionViewController {
         collectionView.register(StocksHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: StocksHeaderView.self))
         collectionView.register(StocksCellView.self, forCellWithReuseIdentifier: String(describing: StocksCellView.self))
         
-        setupSearchResultTabvlewView()
+        setupSearchResultTableView()
         
         setupFloatingActionButton()
     }
@@ -54,13 +63,21 @@ class StocksController: UICollectionViewController {
         return .darkContent
     }
     
-    private func fetchJsonData() {
-        dataStore.shared.fetchData(completion: { (data, error) in
-            DispatchQueue.main.async {
-                self.StocksViewModel = data
-                self.collectionView.reloadData()
+    private func fetchJsonData(_ urlString: String) {
+        NetworkManager.shared.fetchData(fromUrl: urlString, to: StockAPIModel.self) { (data, error) in
+            if let error = error {
+                // TODO: display this as a toast message
+                print("\n\nSomething went wrong fetching the data.\nDescription: \(error)")
             }
-        })
+
+            if let response = data {
+                let jsonData = response.stock.map({ return StockViewModel(stock: $0) })
+                
+                DispatchQueue.main.async {
+                    self.stocksData = jsonData
+                }
+            }
+        }
     }
     
     private func setupFloatingActionButton() {
@@ -73,7 +90,7 @@ class StocksController: UICollectionViewController {
         floatingActionButton.imageView?.sizeToFit()
     }
     
-    private func setupSearchResultTabvlewView() {
+    private func setupSearchResultTableView() {
         view.addSubview(searchResultView)
         
         searchResultViewTopAnchor = searchResultView.topAnchor.constraint(equalTo: view.topAnchor, constant: 180)
@@ -145,12 +162,12 @@ extension StocksController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return StocksViewModel.count
+        return stocksData.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: StocksCellView.self), for: indexPath) as! StocksCellView
-        cell.stockData = StocksViewModel[indexPath.row]
+        cell.stockData = stocksData[indexPath.row]
         return cell
     }
 }
