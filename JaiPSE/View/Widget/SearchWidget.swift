@@ -10,6 +10,7 @@ import UIKit
 
 protocol SearchButtonDelegate {
     func searchButtonTapped()
+    func cancelButtonTapped()
 }
 
 class SearchWidget: UIView {
@@ -34,17 +35,25 @@ class SearchWidget: UIView {
         return button
     }()
     
-    private let searchBar: UISearchTextField = {
+    let searchBar: UISearchTextField = {
         let searchText = UISearchTextField()
+        searchText.addTarget(self, action: #selector(searchAction), for: .touchCancel)
         searchText.tintColor = .darkGray
         searchText.placeholder = "Company name / Stock Code"
         
         let img = UIImage(systemName: "magnifyingglass")
         searchText.alpha = 0
-        searchText.becomeFirstResponder()
+        searchText.resignFirstResponder()
         
         return searchText
     }()
+    
+    @objc
+    func onSearch() {
+        if let value = searchBar.text {
+            print(value)
+        }
+    }
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -67,6 +76,11 @@ class SearchWidget: UIView {
         if let delegate = delegate {
             delegate.searchButtonTapped()
         }
+    }
+    
+    @objc
+    func searchAction() {
+        delegate?.cancelButtonTapped()
     }
     
     // MARK: - Lifecycle
@@ -122,3 +136,8 @@ class SearchWidget: UIView {
     }
 }
 
+extension SearchWidget: UITextFieldDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print(searchText)
+    }
+}

@@ -87,48 +87,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "44918C4A-0F78-4B81-8D47-0A1C8375A691"
+            uuid = "A5844566-59D7-4711-8647-45824B86FE40"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "JaiPSE/Service/NetworkManager.swift"
+            filePath = "JaiPSE/View/Widget/SearchWidget.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "32"
-            endingLineNumber = "32"
-            landmarkName = "fetchData(fromUrl:to:completion:)"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
+            landmarkName = "searchBar(_:textDidChange:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F4DBBC15-D66E-4C1C-93C9-23ED897E87D4"
+            uuid = "26669F39-89DF-4AC4-8541-73405087B3C7"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JaiPSE/Service/NetworkManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "fetchData(fromUrl:to:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4857C1F4-469B-4521-AF04-82598574C856"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JaiPSE/Service/NetworkManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "21"
-            endingLineNumber = "21"
-            landmarkName = "fetchData(fromUrl:to:completion:)"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "fetchData(of:from:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

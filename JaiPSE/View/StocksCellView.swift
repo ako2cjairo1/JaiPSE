@@ -14,13 +14,22 @@ class StocksCellView: UICollectionViewCell {
     // TODO: make this to a data model property
     var stockData: StockViewModel! {
         didSet {
-            symbolLabel.text = stockData.symbol
-            nameLabel.text = stockData.name.uppercased()
-            priceLabel.text = "\(stockData.price)"
-            percentChangeLabel.text = "\(stockData.percentChange)"
-            volumeLabel.text = "\(stockData.volume)"
+            self.symbolLabel.text = self.stockData.symbol
+            self.nameLabel.text = self.stockData.name.uppercased()
+            self.priceLabel.text = "\(self.stockData.price)"
+            self.percentChangeLabel.text = "\(self.stockData.percentChange)"
+            self.volumeLabel.text = "\(self.stockData.volume)"
+            
+            DispatchQueue.main.async {
+                self.activityView.stopAnimating()
+            }
         }
     }
+    
+    lazy var activityView: UIActivityIndicatorView = {
+        let activityView = UIActivityIndicatorView(style: .large)
+        return activityView
+    }()
     
     lazy var cellContainerView: UIView = {
         let view = UIView()
@@ -39,6 +48,9 @@ class StocksCellView: UICollectionViewCell {
         view.addSubview(priceLabel)
         view.addSubview(percentStackView)
         view.addSubview(volumeStackView)
+        view.addSubview(activityView)
+        
+        activityView.anchorExt(centerHorizontal: view.centerXAnchor, centerVertical: view.centerYAnchor, width: 50, height: 50)
         
         return view
     }()
