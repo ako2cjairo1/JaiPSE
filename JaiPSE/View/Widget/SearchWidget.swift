@@ -10,7 +10,7 @@ import UIKit
 
 protocol SearchButtonDelegate {
     func searchButtonTapped()
-    func cancelButtonTapped()
+    func searchBarTapped(searchKeyword: String?)
 }
 
 class SearchWidget: UIView {
@@ -35,17 +35,15 @@ class SearchWidget: UIView {
         return button
     }()
     
-    let searchBar: UISearchTextField = {
-        let searchText = UISearchTextField()
-        searchText.addTarget(self, action: #selector(searchAction), for: .touchCancel)
-        searchText.tintColor = .darkGray
-        searchText.placeholder = "Company name / Stock Code"
+    lazy var searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.searchBarStyle = .minimal
+        searchBar.tintColor = .darkGray
+        searchBar.placeholder = "Company name / Stock Code"
+        searchBar.delegate = self
+        searchBar.alpha = 0
         
-        let img = UIImage(systemName: "magnifyingglass")
-        searchText.alpha = 0
-        searchText.resignFirstResponder()
-        
-        return searchText
+        return searchBar
     }()
     
     @objc
@@ -78,11 +76,6 @@ class SearchWidget: UIView {
         }
     }
     
-    @objc
-    func searchAction() {
-        delegate?.cancelButtonTapped()
-    }
-    
     // MARK: - Lifecycle
     private func superView() {
         backgroundColor = .searchContainerBgColor
@@ -93,7 +86,7 @@ class SearchWidget: UIView {
         layer.shadowOffset = CGSize(width: 0, height: 3)
         layer.shadowOpacity = 0.5
         layer.shadowRadius = 10
-
+        
         addSubview(searchTitle)
         addSubview(searchButton)
         addSubview(searchBar)
@@ -120,8 +113,8 @@ class SearchWidget: UIView {
     func toggleSearchBar() {
         let fontSize: CGFloat = (isSearching ? 20 : 40)
         searchTitle.font = UIFont(descriptor: UIFontDescriptor(name: "Pacifico-Regular", size: fontSize), size: fontSize)
-    
-        let img = UIImage(systemName: (isSearching ? "xmark.circle" : "magnifyingglass.circle.fill"))
+        
+        let img = UIImage(systemName: (isSearching ? "xmark.circle.fill" : "magnifyingglass.circle.fill"))
         searchButton.setBackgroundImage(img, for: .normal)
         searchBar.alpha = isSearching ? 1 : 0
         
@@ -130,14 +123,29 @@ class SearchWidget: UIView {
     }
     
     private func animate() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.layoutIfNeeded()
+        searchButton.transform = CGAffineTransform(rotationAngle: 180)
+        searchButton.layer.shadowOpacity = 0
+        
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            self.searchButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            let fontSize: CGFloat = (self.isSearching ? 20 : 40)
+            self.searchTitle.font = UIFont(descriptor: UIFontDescriptor(name: "Pacifico-Regular", size: fontSize), size: fontSize)
+        }, completion: {
+            if $0 {
+                UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: {
+                    self.searchButton.transform = .identity
+                    self.searchButton.layer.shadowOpacity = 0.4
+                    self.searchButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+                    self.searchButton.layer.shadowRadius = 2
+                })
+            }
         })
     }
 }
 
-extension SearchWidget: UITextFieldDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(searchText)
+extension SearchWidget: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        delegate?.searchBarTapped(searchKeyword: searchBar.text)
+        //        searchBar.resignFirstResponder()
     }
 }

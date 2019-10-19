@@ -10,16 +10,20 @@ import Foundation
 
 enum NetworkManagerErrors: String, Error {
     case clientServerErrorResponse = "Client/Server Error."
-    case invalidData = "No/Invalid data have been received from url."
+    case invalidData = "Invalid data."
     case invalidURL = "Invalid URL."
     case general = "Something went wrong."
-    case parseData = "Error parsing the data to JSON type."
-    case noResponse = "No Response from server."
+    case parseData = "Error parsing the data."
+    case noConnection = "No Internet Connection"
+    case noResponse = "No Response."
+    
 }
 
 class NetworkManager {
     // Singleton
     static let shared = NetworkManager()
+    
+    private var logManager = LogHelper<NetworkManager>()
     
     // make sure for implementors not able to recreate an instance
     init() {}
@@ -28,41 +32,52 @@ class NetworkManager {
     func fetchData<T:Decodable>(of type: T.Type = T.self, from urlString: String, completion: @escaping(Result<T, NetworkManagerErrors>) -> Void) {
         
         guard let url = URL(string: urlString) else {
-            print("\n-->DEBUG\n\n \(NetworkManagerErrors.invalidURL.rawValue) URL: \(urlString)\n\n<--END\n")
+            logManager.createLog("\(NetworkManagerErrors.invalidURL.rawValue)\nURL: \(urlString)")
             completion(.failure(NetworkManagerErrors.invalidURL))
             return
         }
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let error = error {
-                print("\n-->DEBUG\n\n\(NetworkManagerErrors.general.rawValue) \(error)\n\n<--END\n")
-                completion(.failure(NetworkManagerErrors.general))
+            
+            if let error = error as NSError? {
+                var errorType: NetworkManagerErrors
+                
+                switch error.code {
+                case -1009:
+                    errorType = .noConnection
+                    break
+                default:
+                    errorType = .general
+                }
+                
+                self.logManager.createLog("\(errorType.rawValue)\n\n\(error)")
+                completion(.failure(errorType))
                 return
             }
             
             guard let response = response as? HTTPURLResponse else {
-                print("\n-->DEBUG\n\n \(NetworkManagerErrors.noResponse.rawValue)\n\n<--END\n")
+                self.logManager.createLog("\(NetworkManagerErrors.noResponse.rawValue)\n\n\(String(describing: error))")
                 completion(.failure(NetworkManagerErrors.noResponse))
                 return
             }
-
+            
             // check for Success response code
             if 200...299 ~= response.statusCode {
                 if let data = data {
                     do {
                         let jsonData = try JSONDecoder().decode(type, from: data)
                         completion(.success(jsonData))
-
+                        
                     } catch let parseError {
-                        print("\n-->DEBUG\n\n \(NetworkManagerErrors.parseData.rawValue) \(parseError)\n\n<--END\n")
+                        self.logManager.createLog("\(NetworkManagerErrors.parseData.rawValue)\n\(parseError)")
                         completion(.failure(NetworkManagerErrors.parseData))
                     }
                 } else {
-                    print("\n-->DEBUG\n\n \(NetworkManagerErrors.invalidData.rawValue)\n\n<--END\n")
+                    self.logManager.createLog("\(NetworkManagerErrors.invalidData.rawValue)")
                     completion(.failure(NetworkManagerErrors.invalidData))
                 }
             } else {
-                print("\n-->DEBUG\n\n \(NetworkManagerErrors.clientServerErrorResponse.rawValue) Status Code: \(response.statusCode). URL: \(urlString)\n\n<--END\n")
+                self.logManager.createLog("\(NetworkManagerErrors.clientServerErrorResponse.rawValue)\nStatus Code: \(response.statusCode). URL: \(urlString)")
                 completion(.failure(NetworkManagerErrors.clientServerErrorResponse))
             }
         }.resume()

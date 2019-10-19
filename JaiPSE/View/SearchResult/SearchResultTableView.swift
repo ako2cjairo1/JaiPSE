@@ -11,10 +11,17 @@ import UIKit
 class SearchResultTableView: UIView {
     
     // MARK: - Properties
-    // TODO: update this property using the actual data model
-    var searchResult: [Stock] = [
-        Stock(name: "Jollibee", price: StockPrice(currency: "PHP", amount: 231.20), percentChange: 0.96, volume: 186910, symbol: "JFC"),
-        Stock(name: "WILCON DEPOT", price: StockPrice(currency: "PHP", amount: 6.78), percentChange: -0.12, volume: 307400, symbol: "WLCON")]
+    var searchResult = [StockViewModel]() {
+        didSet {
+            searchTV.reloadData()
+        }
+    }
+    
+    lazy var searchTV: UITableView = {
+        let tv = UITableView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), style: .grouped)
+        
+        return tv
+    }()
     
     lazy var numberOfResult: UILabel = {
         let label = UILabel()
@@ -43,28 +50,27 @@ class SearchResultTableView: UIView {
     private func setupView() {
         backgroundColor = .clear
         
-        let tv = UITableView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), style: .grouped)
-        addSubview(tv)
-        tv.anchorExt(top: topAnchor,
-                     leading: leadingAnchor,
-                     bottom: bottomAnchor,
-                     trailing: trailingAnchor,
-                     centerHorizontal: centerXAnchor,
-                     centerVertical: centerYAnchor,
-                     width: frame.width, height: frame.height)
-        tv.rowHeight = 40
-        tv.layer.cornerRadius = 25
-        tv.backgroundColor = .darkGray
+        addSubview(searchTV)
+        searchTV.anchorExt(top: topAnchor,
+                           leading: leadingAnchor,
+                           bottom: bottomAnchor,
+                           trailing: trailingAnchor,
+                           centerHorizontal: centerXAnchor,
+                           centerVertical: centerYAnchor,
+                           width: frame.width, height: frame.height)
+        searchTV.rowHeight = 40
+        searchTV.layer.cornerRadius = 25
+        searchTV.backgroundColor = .darkGray
         
-        tv.tableHeaderView?.addSubview(numberOfResult)
-        numberOfResult.anchorExt(top: tv.tableHeaderView?.topAnchor,
-        leading: tv.tableHeaderView?.leadingAnchor,
-        trailing: tv.tableHeaderView?.trailingAnchor,
-        height: 30)
+        searchTV.tableHeaderView?.addSubview(numberOfResult)
+        numberOfResult.anchorExt(top: searchTV.tableHeaderView?.topAnchor,
+                                 leading: searchTV.tableHeaderView?.leadingAnchor,
+                                 trailing: searchTV.tableHeaderView?.trailingAnchor,
+                                 height: 30)
         
-        tv.register(SearchResultCell.self, forCellReuseIdentifier: String(describing: SearchResultCell.self))
-        tv.dataSource = self
-        tv.delegate = self
+        searchTV.register(SearchResultCell.self, forCellReuseIdentifier: String(describing: SearchResultCell.self))
+        searchTV.dataSource = self
+        searchTV.delegate = self
     }
 }
 

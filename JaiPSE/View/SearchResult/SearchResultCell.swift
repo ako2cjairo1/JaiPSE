@@ -11,9 +11,8 @@ import UIKit
 class SearchResultCell: UITableViewCell {
 
     // MARK: - Properties
-    var stockData: Stock? {
+    var stockData: StockViewModel? {
         didSet {
-            print("stockData received...")
             stockCode.text = stockData?.symbol
             stockName.text = stockData?.name
         }
@@ -24,23 +23,28 @@ class SearchResultCell: UITableViewCell {
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.textColor = .label
         label.textAlignment = .right
-        
-//        label.layer.borderWidth = 0.5
-//        label.layer.borderColor = UIColor.red.cgColor
-        
         return label
     }()
     
     lazy var stockName: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .secondaryLabel
         label.numberOfLines = 3
-        
-//        label.layer.borderWidth = 0.5
-//        label.layer.borderColor = UIColor.red.cgColor
-        
+        label.layer.borderWidth = 0.5
+        label.layer.borderColor = UIColor.black.cgColor
         return label
+    }()
+    
+    var cellAddButton: UIButton = {
+        let button = UIButton()
+//        button.imageView?.image = UIImage(systemName: "plus.circle")
+//        button.setTitle("ADD", for: .normal)
+        button.tintColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
+        button.layer.borderColor = UIColor.black.cgColor
+        button.layer.borderWidth = 1
+        
+        return button
     }()
     
     // MARK: - Init
@@ -65,17 +69,31 @@ class SearchResultCell: UITableViewCell {
     
     private func setupView() {        
         addSubview(stockCode)
+        addSubview(cellAddButton)
         addSubview(stockName)
         
         stockCode.anchorExt(top: topAnchor,
                             leading: leadingAnchor, paddingLead: 16,
                             bottom: bottomAnchor,
-                            centerVertical: centerYAnchor, width: 100, height: 30)
+                            centerVertical: centerYAnchor, width: 80)
+        
+        cellAddButton.anchorExt(top: topAnchor,
+                                leading: stockName.trailingAnchor, paddingLead: 5,
+                                bottom: bottomAnchor,
+                                trailing: trailingAnchor, paddingTrail: 5,
+                                centerVertical: centerYAnchor,
+                                width: frame.height)
         
         stockName.anchorExt(top: topAnchor,
                             leading: stockCode.trailingAnchor, paddingLead: 10,
                             bottom: bottomAnchor,
-                            centerVertical: centerYAnchor, width: frame.width / 2, height: 30)
+                            trailing: cellAddButton.leadingAnchor,
+                            centerVertical: centerYAnchor,
+                            height: 30)
+        
+        let img = UIImage(systemName: "plus.circle")
+        cellAddButton.setBackgroundImage(img, for: .normal)
+        
     }
 
 }

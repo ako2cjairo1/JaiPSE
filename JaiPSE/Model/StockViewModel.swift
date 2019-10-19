@@ -18,6 +18,32 @@ struct StockViewModel {
         self.price = stock.price.amount
         self.percentChange = stock.percentChange
         self.volume = stock.volume
-        self.symbol = stock.symbol
+        self.symbol = stock.code
+    }
+    
+    func createPredicate(_ searchKey: String, _ stock: StockViewModel) -> Bool {
+        if stock.name.lowercased().range(of: searchKey.lowercased()) != nil {
+            return true
+        }
+        
+        if stock.symbol.lowercased().range(of: searchKey.lowercased()) != nil {
+            return true
+        }
+        
+        if let price = Float(searchKey), price <= stock.price {
+            return true
+        }
+        
+        return false
+    }
+    
+    func createPredicate(_ symbols: [String], _ stock: StockViewModel) -> Bool {
+        for symbol in symbols {
+            if stock.symbol.lowercased().range(of: symbol.lowercased()) != nil {
+                return true
+            }
+        }
+        
+        return false
     }
 }

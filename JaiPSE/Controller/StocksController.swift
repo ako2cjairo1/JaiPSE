@@ -13,15 +13,16 @@ enum ActionType: String {
     case search
 }
 
-enum UrlSourceConstants: String {
-    case byAllCompanyUrl = "http://phisix-api3.appspot.com/stocks.json"
-    case bySymbolUrl = "http://phisix-api3.appspot.com/stocks/<symbol>.json"
-    case offlineUrl = ""
-    case symbolPlaceholder = "<symbol>"
+struct Constant {
+    // URLs
+    static let urlStocks: String                     = "http://phisix-api3.appspot.com/stocks.json"
+    static let urlStocksBySymbol: String             = "http://phisix-api3.appspot.com/stocks/<symbol>.json"
+    static let urlSymbolPlaceholder: String          = "<symbol>"
+    // UserDefault key
+    static let userDefaultsForKeyStockNames: String  = "stockNames"
 }
 
 class StocksController: UICollectionViewController {
-
     // MARK: - Properties
     var stocksData = [StockViewModel]() {
         didSet {
@@ -30,14 +31,13 @@ class StocksController: UICollectionViewController {
     }
     
     // Widget instance
-    var headerSearchBar = StocksHeaderView()
-    var floatingActionButton = FloatingActionButtonWidget()
-    var searchResultView = SearchResultTableView()
-    var searchResultViewTopAnchor = NSLayoutConstraint()
+    var headerSearchBar                             = StocksHeaderView()
+    var floatingActionButton                        = FloatingActionButtonWidget()
+    var searchResultView                            = SearchResultTableView()
     
     // MARK: - Lifecycle
     override var preferredStatusBarStyle: UIStatusBarStyle {
-         // Make the status bar fonts/etc. to use light colors
+        // Make the status bar fonts/etc. to use light colors
         return .darkContent
     }
     
@@ -48,17 +48,35 @@ class StocksController: UICollectionViewController {
         setupSearchResultTableView()
         setupFloatingActionButton()
         
-        fetchStocks(fromUrl: UrlSourceConstants.byAllCompanyUrl.rawValue)
+        fetchStocksByUserDefaults(fromUrl: Constant.urlStocks) { (result) in
+            if let resultStockVMData = result {
+                self.stocksData = resultStockVMData
+            }
+        }
+        
+        /*
+         TODO: use this code for adding new a new stocks to watch
+         --> UserDefaults.standard.setValue(stocksArray, forKey: "stockNames")
+         To remove:
+         --> UserDefaults.standard.removeObject(forKey: "stockNames")
+         */
     }
 }
 
 // MARK: - Private functions
 extension StocksController {
     
+    fileprivate func setupSearchResultTableView() {
+        view.addSubview(searchResultView)
+        searchResultView.anchorExt(leading: view.leadingAnchor,
+                                   bottom: view.bottomAnchor,
+                                   trailing: view.trailingAnchor,
+                                   height: view.frame.size.height - 170)
+        
+        searchResultViewAnimateOut()
+    }
+    
     fileprivate func setupStocksCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.backgroundColor = .mainContainerBgColor
         
@@ -71,56 +89,93 @@ extension StocksController {
         // Custom controls/views registration
         collectionView.register(StocksHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: StocksHeaderView.self))
         collectionView.register(StocksCellView.self, forCellWithReuseIdentifier: String(describing: StocksCellView.self))
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
     
-    fileprivate func fetchStocks(fromUrl urlString: String) {
+    fileprivate func fetchStocks(fromUrl urlString: String, searchKeyword: String? = "", completion: @escaping([StockViewModel]?) -> Void) {
+        
         NetworkManager.shared.fetchData(of: StockAPIModel.self, from: urlString) { (result) in
-            
             DispatchQueue.main.async {
                 switch result {
+                case .failure(let resultError):
+                    ToastMessageWidget.showMessage(toViewContainer: self.view, resultError.rawValue)
+                    break
+                case .success(let resultStockAPIModelData):
+                    // Convert response to StockViewModel
+                    var stockVMData = resultStockAPIModelData.stocks.map({ return StockViewModel(stock: $0) })
+                    
+                    // filter StockViewModel if there are any search keword provided
+                    if let searchKeyword = searchKeyword, !searchKeyword.isEmpty {
+                        stockVMData = stockVMData.filter({ $0.createPredicate(searchKeyword, $0) })
+                    }
+                    completion(stockVMData)
+                }
+            }
+        }
+    }
+    
+    fileprivate func fetchStocksByUserDefaults(fromUrl urlString: String, searchKeyword: String? = "", completion: @escaping([StockViewModel]?) -> Void) {
+        
+        if let stockCodesFromUserDefaults = UserDefaults.standard.array(forKey: Constant.userDefaultsForKeyStockNames) as? [String] {
+            
+            NetworkManager.shared.fetchData(of: StockAPIModel.self, from: urlString) { (result) in
+                DispatchQueue.main.async {
+                    switch result {
                     case .failure(let resultError):
-                        ToastMessageWidget.shared.showMessage(toContainer: self.view, message: resultError.rawValue)
+                        ToastMessageWidget.showMessage(toViewContainer: self.view, resultError.rawValue)
                         break
-                    case .success(let resultData):
-                        // TODO: Is this implementation inside dispatchque safe?
-                        self.stocksData = resultData.stock.map({
+                        
+                    case .success(let resultStockAPIModelData):
+                        var stockVMData = resultStockAPIModelData.stocks.map({
+                            // convert fetched data to StockViewModel
                             return StockViewModel(stock: $0)
-                        })
+                        }).filter {
+                            // then after, filter StockViewModel data using stocks added by user (stored in UserDefaults)
+                            $0.createPredicate(stockCodesFromUserDefaults, $0)
+                        }
+                        
+                        // second level of predicate to filter if there are any search keword provided
+                        if let searchKeyword = searchKeyword, !searchKeyword.isEmpty {
+                            stockVMData = stockVMData.filter({ $0.createPredicate(searchKeyword, $0) })
+                        }
+                        completion(stockVMData)
+                    }
                 }
             }
             
         }
     }
     
-    fileprivate func fetchStocksOffline(userDefaultKey key: String) {
-        NetworkManager.shared.fetchData(fromFile: key, to: StockAPIModel.self) { (jssonData, error) in
-            
+    fileprivate func fetchStocksOffline(fileName key: String, searchKeyword: String? = "", completion: @escaping([StockViewModel]?) -> Void) {
+        
+        NetworkManager.shared.fetchData(fromFile: key, to: StockAPIModel.self) { (result, error) in
             DispatchQueue.main.async {
-                if let error = error {
-                    ToastMessageWidget.shared.showMessage(toContainer: self.view, message: error.localizedDescription)
+                if let resultError = error {
+                    ToastMessageWidget.showMessage(toViewContainer: self.view, resultError.localizedDescription)
                     return
                 }
                 
-                if let response = jssonData {
-                    // TODO: Is this implementation inside dispatchque safe?
-                    self.stocksData = response.stock.map({
-                        return StockViewModel(stock: $0)
-                    })
+                if let resultStockAPIModelData = result {
+                    var stockVMData = resultStockAPIModelData.stocks.map({ return StockViewModel(stock: $0) })
+                    
+                    if let searchKey = searchKeyword {
+                        stockVMData = stockVMData.filter({ $0.createPredicate(searchKey, $0) })
+                    }
+                    completion(stockVMData)
                 }
             }
             
         }
     }
+}
+
+extension StocksController: LogHelperDelegate {
     
-    fileprivate func setupSearchResultTableView() {
-        view.addSubview(searchResultView)
-        
-        searchResultViewTopAnchor = searchResultView.topAnchor.constraint(equalTo: view.topAnchor, constant: 180)
-        searchResultViewTopAnchor.isActive = false
-        searchResultView.anchorExt(leading: view.leadingAnchor,
-                                    bottom: view.bottomAnchor,
-                                    trailing: view.trailingAnchor)
-        searchResultViewTopAnchor.isActive = false
+    func Log(_ logMessage: String, _ severity: Severity?) {
+        let logManager = LogHelper<StocksController>()
+        logManager.createLog(logMessage)
     }
 }
 
@@ -128,29 +183,41 @@ extension StocksController {
 extension StocksController: SearchButtonDelegate {
     
     func searchButtonTapped() {
+        
         if floatingActionButton.toggleFloatingButton {
-            self.searchResultViewTopAnchor.isActive = false
-
             // prevent search bar to toggle when floating action butten is currently in-use
             headerSearchBar.searchWidget.isSearching = false
+            floatingActionButton.toggleFloatingButton = false
+            searchResultViewAnimateOut()
             
-            UIView.animate(withDuration: 0.3) {
-                self.searchResultView.layoutIfNeeded()
-            }
         } else {
             if headerSearchBar.searchWidget.isSearching {
-                fetchStocks(fromUrl: UrlSourceConstants.byAllCompanyUrl.rawValue)
+                fetchStocksByUserDefaults(fromUrl: Constant.urlStocks) {
+                    if let result = $0 {
+                        self.stocksData = result
+                    }
+                }
             }
         }
+        
+        headerSearchBar.searchWidget.searchBar.text = nil
     }
     
-    // TODO: implement to proper selector delegate
-    func cancelButtonTapped() {
-        if let symbol = headerSearchBar.searchWidget.searchBar.text {
-            let placeholder: String = UrlSourceConstants.symbolPlaceholder.rawValue
-            let url: String = UrlSourceConstants.bySymbolUrl.rawValue.replacingOccurrences(of: placeholder, with: symbol, options: .literal)
-            
-            fetchStocks(fromUrl: url)
+    func searchBarTapped(searchKeyword: String?) {
+        if let searchKeyword = searchKeyword {
+            if floatingActionButton.toggleFloatingButton {
+                fetchStocks(fromUrl: Constant.urlStocks, searchKeyword: searchKeyword) {
+                    if let fetchedModelData = $0 {
+                        self.searchResultView.searchResult = fetchedModelData
+                    }
+                }
+            } else {
+                fetchStocksByUserDefaults(fromUrl: Constant.urlStocks, searchKeyword: searchKeyword) {
+                    if let fetchedModelData = $0 {
+                        self.stocksData = fetchedModelData
+                    }
+                }
+            }
         }
     }
 }
@@ -166,34 +233,51 @@ extension StocksController: FloatingActionButtonDelegate {
         
         view.addSubview(floatingActionButton)
         floatingActionButton.anchorExt(bottom: view.bottomAnchor, paddingBottom: bottomPadding,
-                               trailing: view.trailingAnchor, paddingTrail: 30,
-                               width: 50, height: buttonHeight)
+                                       trailing: view.trailingAnchor, paddingTrail: 30,
+                                       width: 50, height: buttonHeight)
     }
     
     fileprivate func toggleActionWithAnimation() {
+        
         if floatingActionButton.toggleFloatingButton {
-            self.searchResultViewTopAnchor.isActive = true
-
             // prevent search bar to toggle when floating action butten is currently in-use
             if headerSearchBar.searchWidget.isSearching {
                 headerSearchBar.searchWidget.toggleSearchBar()
             }
+            searchResultViewAnimateIn()
+            
         } else {
-            self.searchResultViewTopAnchor.isActive = false
-
             // prevent search bar to toggle floating action button is not in use.
             if !headerSearchBar.searchWidget.isSearching {
                 headerSearchBar.searchWidget.toggleSearchBar()
             }
-        }
-
-        UIView.animate(withDuration: 0.3) {
-            self.searchResultView.layoutIfNeeded()
+            searchResultViewAnimateOut()
         }
     }
     
+    fileprivate func searchResultViewAnimateIn() {
+        searchResultView.alpha = 0
+        searchResultView.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height - 170)
+        
+        UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 5, initialSpringVelocity: 15, options: .curveEaseInOut, animations: {
+            self.searchResultView.alpha = 1
+            self.searchResultView.transform = .identity
+        })
+    }
+    
+    fileprivate func searchResultViewAnimateOut() {
+        floatingActionButton.toggleAnimation()
+        searchResultView.alpha = 1
+        searchResultView.transform = .identity
+        
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 5, initialSpringVelocity: 15, options: .curveEaseInOut, animations: {
+            self.searchResultView.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - 170)
+            self.searchResultView.alpha = 0.5
+        })
+    }
+    
     func floatingActionButtonTapped() {
-         toggleActionWithAnimation()
+        toggleActionWithAnimation()
     }
 }
 
@@ -213,11 +297,7 @@ extension StocksController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: StocksCellView.self), for: indexPath) as! StocksCellView
         
-        cell.activityView.startAnimating()
-        
-        DispatchQueue.main.async {
-            cell.stockData = self.stocksData[indexPath.row]
-        }
+        cell.stockData = self.stocksData[indexPath.row]
         
         return cell
     }

@@ -11,18 +11,14 @@ import UIKit
 class StocksCellView: UICollectionViewCell {
     
     // MARK: - Properties
-    // TODO: make this to a data model property
     var stockData: StockViewModel! {
         didSet {
-            self.symbolLabel.text = self.stockData.symbol
-            self.nameLabel.text = self.stockData.name.uppercased()
-            self.priceLabel.text = "\(self.stockData.price)"
-            self.percentChangeLabel.text = "\(self.stockData.percentChange)"
-            self.volumeLabel.text = "\(self.stockData.volume)"
-            
-            DispatchQueue.main.async {
-                self.activityView.stopAnimating()
-            }
+            activityView.stopAnimating()
+            symbolLabel.text = self.stockData.symbol.uppercased()
+            nameLabel.text = self.stockData.name.uppercased()
+            priceLabel.text = "\(self.stockData.price)"
+            percentChangeLabel.text = "\(self.stockData.percentChange) %"
+            volumeLabel.text = "\(self.stockData.volume)"
         }
     }
     
@@ -50,8 +46,6 @@ class StocksCellView: UICollectionViewCell {
         view.addSubview(volumeStackView)
         view.addSubview(activityView)
         
-        activityView.anchorExt(centerHorizontal: view.centerXAnchor, centerVertical: view.centerYAnchor, width: 50, height: 50)
-        
         return view
     }()
     
@@ -61,7 +55,6 @@ class StocksCellView: UICollectionViewCell {
         label.adjustsFontSizeToFitWidth = true
         label.contentMode = .scaleAspectFill
         label.font = UIFont.systemFont(ofSize: 30, weight: .semibold)
-        label.text = "JFC"
         label.textAlignment = .center
         label.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         
@@ -74,7 +67,6 @@ class StocksCellView: UICollectionViewCell {
         label.contentMode = .scaleAspectFill
         label.numberOfLines = 2
         label.font = UIFont.systemFont(ofSize: 10, weight: .semibold)
-        label.text = ("Jollibee Foods Corp. and Friends").uppercased()
         label.textAlignment = .left
         label.textColor = .darkGray
         
@@ -87,7 +79,6 @@ class StocksCellView: UICollectionViewCell {
         label.adjustsFontSizeToFitWidth = true
         label.contentMode = .scaleAspectFill
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        label.text = "1234.00"
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0, green: 0.6500428082, blue: 0, alpha: 1) // TODO: Changes depending on prev opening price
         
@@ -117,7 +108,6 @@ class StocksCellView: UICollectionViewCell {
         label.adjustsFontSizeToFitWidth = true
         label.contentMode = .scaleAspectFill
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        label.text = "1.80 %"
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0, green: 0.6500428082, blue: 0, alpha: 1) // TODO: Changes depending on prev opening price
         
@@ -144,14 +134,14 @@ class StocksCellView: UICollectionViewCell {
         
         stack.addArrangedSubview(volumeImageView)
         volumeImageView.anchorExt(top: stack.topAnchor,
-                                         leading: stack.leadingAnchor,
-                                         bottom: stack.bottomAnchor,
-                                         width: 25, height: 25)
+                                  leading: stack.leadingAnchor,
+                                  bottom: stack.bottomAnchor,
+                                  width: 25, height: 25)
         
         stack.addArrangedSubview(volumeLabel)
         volumeLabel.anchorExt(top: stack.topAnchor,
-                                     leading: volumeImageView.trailingAnchor, paddingLead: 5,
-                                     bottom: stack.bottomAnchor)
+                              leading: volumeImageView.trailingAnchor, paddingLead: 5,
+                              bottom: stack.bottomAnchor)
         return stack
     }()
     
@@ -161,7 +151,6 @@ class StocksCellView: UICollectionViewCell {
         label.adjustsFontSizeToFitWidth = true
         label.contentMode = .scaleAspectFill
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        label.text = "123456.78"
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         
@@ -212,11 +201,16 @@ class StocksCellView: UICollectionViewCell {
                              width: cellQuadrantWidth)
         
         percentStackView.anchorExt(top: priceLabel.bottomAnchor, paddingTop: 10,
-                                  trailing: cellContainerView.trailingAnchor, paddingTrail: 8,
-                                  width: cellQuadrantWidth)
+                                   trailing: cellContainerView.trailingAnchor, paddingTrail: 8,
+                                   width: cellQuadrantWidth)
         
         volumeStackView.anchorExt(top: percentStackView.bottomAnchor, paddingTop: 5,
                                   trailing: cellContainerView.trailingAnchor, paddingTrail: 8,
                                   width: cellQuadrantWidth)
+        
+        activityView.anchorExt(centerHorizontal: centerXAnchor,
+                               centerVertical: centerYAnchor,
+                               width: 50, height: 50)
+        activityView.startAnimating()
     }
 }

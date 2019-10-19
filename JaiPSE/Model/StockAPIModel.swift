@@ -7,12 +7,12 @@
 //
 
 struct StockAPIModel: Codable {
-    let stock: [Stock]
-    let asOf: String
+    let stocks: [Stock]
+    let dateAsOf: String
 
     private enum CodingKeys: String, CodingKey {
-        case stock
-        case asOf = "as_of"
+        case stocks             = "stock"
+        case dateAsOf           = "as_of"
     }
 }
 
@@ -21,14 +21,14 @@ struct Stock: Codable {
     let price: StockPrice
     let percentChange: Float
     let volume: Double
-    let symbol: String
+    let code: String
     
     private enum CodingKeys: String, CodingKey {
         case name
         case price
-        case percentChange = "percent_change"
+        case percentChange      = "percent_change"
         case volume
-        case symbol
+        case code               = "symbol"
     }
 }
 
