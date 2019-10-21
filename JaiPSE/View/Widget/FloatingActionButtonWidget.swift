@@ -8,15 +8,15 @@
 
 import UIKit
 
-protocol FloatingActionButtonDelegate {
-    func floatingActionButtonTapped()
+protocol FloatingButtonDelegate {
+    func floatingButtonTapped()
 }
 
-class FloatingActionButtonWidget: UIButton {
+class FloatingButtonWidget: UIButton {
     
     // MARK: - Properties
     var toggleFloatingButton: Bool = false
-    var delegate: FloatingActionButtonDelegate?
+    var delegate: FloatingButtonDelegate?
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -49,7 +49,7 @@ class FloatingActionButtonWidget: UIButton {
     func tapAction() {
         toggleFloatingButton = !toggleFloatingButton
         toggleAnimation()
-        delegate?.floatingActionButtonTapped()
+        delegate?.floatingButtonTapped()
     }
 
     func toggleAnimation() {

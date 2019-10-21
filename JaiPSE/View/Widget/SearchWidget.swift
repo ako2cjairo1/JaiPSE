@@ -6,23 +6,81 @@
 //  Copyright © 2019 ako2cjairo. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 protocol SearchButtonDelegate {
+    /// A delegate function of SearchWidget (custom class) that responds to when the search image button was tapped.
     func searchButtonTapped()
+    /// A delegate function of SearchWidget (custom class) that responds to when the "Search" key was tapped.
     func searchBarTapped(searchKeyword: String?)
 }
 
 class SearchWidget: UIView {
     
     // MARK: - Properties
-    var isSearching: Bool = false
+    var isSearchMode: Bool = true {
+        didSet {
+    
+            let titleFontSize: CGFloat = (isSearchMode ? 30 : 55)
+            titleLabel.font = UIFont.boldSystemFont(ofSize: titleFontSize)
+            
+            let dateFontSize: CGFloat = (isSearchMode ? 15 : 20)
+            dateLabel.font = UIFont.boldSystemFont(ofSize: dateFontSize)
+            
+            if titleStack.subviews.count > 0 {
+                titleStack.removeArrangedSubview(titleLabel)
+                titleStack.removeArrangedSubview(dateLabel)
+            }
+            
+            if isSearchMode {
+                titleStack.axis = .horizontal
+                titleStack.alignment = .top
+                searchBar.alpha = 1
+                
+                titleStack.addArrangedSubview(titleLabel)
+                titleStack.addArrangedSubview(dateLabel)
+                
+            } else {
+                titleStack.axis = .vertical
+                titleStack.alignment = .leading
+                
+                titleStack.addArrangedSubview(dateLabel)
+                titleStack.addArrangedSubview(titleLabel)
+                // hides the searchbar
+                searchBar.alpha = 0
+            }
+            
+            let img = UIImage(systemName: (isSearchMode ? "xmark.circle.fill" : "magnifyingglass.circle.fill"))
+            searchButton.setBackgroundImage(img, for: .normal)
+            
+        }
+    }
     var delegate: SearchButtonDelegate?
     
-    private let searchTitle: UILabel = {
+    private lazy var titleStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [dateLabel, titleLabel])
+        stack.distribution = .fill
+        
+        return stack
+    }()
+    
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Stocks"
         label.textColor = .darkText
+        
+        return label
+    }()
+    
+    private let dateLabel: UILabel = {
+        let label = UILabel()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM dd"
+        
+        label.text = formatter.string(from: Date())
+        label.textAlignment = .right
+        label.textColor = .darkGray
         
         return label
     }()
@@ -38,20 +96,14 @@ class SearchWidget: UIView {
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
+        searchBar.searchTextField.layer.borderColor = UIColor.orange.cgColor
+        searchBar.searchTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 20)
         searchBar.tintColor = .darkGray
         searchBar.placeholder = "Company name / Stock Code"
         searchBar.delegate = self
-        searchBar.alpha = 0
         
         return searchBar
     }()
-    
-    @objc
-    func onSearch() {
-        if let value = searchBar.text {
-            print(value)
-        }
-    }
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -69,17 +121,17 @@ class SearchWidget: UIView {
     // MARK: - Selectors
     @objc
     func searchStock() {
-        toggleSearchBar()
-        
         if let delegate = delegate {
             delegate.searchButtonTapped()
+            toggleSearchBar()
         }
     }
     
     // MARK: - Lifecycle
-    private func superView() {
+    fileprivate func superView() {
         backgroundColor = .searchContainerBgColor
         layer.cornerRadius = 25
+        layer.masksToBounds = true
         
         // shadow
         layer.shadowColor = UIColor.white.cgColor
@@ -87,7 +139,7 @@ class SearchWidget: UIView {
         layer.shadowOpacity = 0.5
         layer.shadowRadius = 10
         
-        addSubview(searchTitle)
+        addSubview(titleStack)
         addSubview(searchButton)
         addSubview(searchBar)
         setAnchors()
@@ -96,56 +148,64 @@ class SearchWidget: UIView {
         toggleSearchBar()
     }
     
-    private func setAnchors() {
-        searchTitle.anchorExt(top: topAnchor, paddingTop: 65,
-                              leading: leadingAnchor, paddingLead: 16)
-        
-        searchButton.anchorExt(bottom: bottomAnchor, paddingBottom: 15,
-                               trailing: trailingAnchor, paddingTrail: 16,
-                               width: 40, height: 40)
-        
-        searchBar.anchorExt(top: searchTitle.bottomAnchor, paddingTop: 3,
-                            leading: leadingAnchor, paddingLead: 17,
-                            bottom: bottomAnchor, paddingBottom: 18,
-                            trailing: searchButton.leadingAnchor, paddingTrail: 7)
+    fileprivate func setAnchors() {
+        titleStack.anchorExt(top: topAnchor, paddingTop: 45, leading: leadingAnchor, paddingLead: 16, trailing: trailingAnchor, paddingTrail: 16)
+        searchBar.anchorExt(top: titleStack.bottomAnchor, leading: leadingAnchor, paddingLead: 17, trailing: searchButton.leadingAnchor, paddingTrail: 7)
+        searchButton.anchorExt(bottom: bottomAnchor, paddingBottom: 15, trailing: trailingAnchor, paddingTrail: 16, width: 40, height: 40)
     }
     
-    func toggleSearchBar() {
-        let fontSize: CGFloat = (isSearching ? 20 : 40)
-        searchTitle.font = UIFont(descriptor: UIFontDescriptor(name: "Pacifico-Regular", size: fontSize), size: fontSize)
-        
-        let img = UIImage(systemName: (isSearching ? "xmark.circle.fill" : "magnifyingglass.circle.fill"))
-        searchButton.setBackgroundImage(img, for: .normal)
-        searchBar.alpha = isSearching ? 1 : 0
-        
-        animate()
-        isSearching = !isSearching
-    }
-    
-    private func animate() {
+    fileprivate func animate() {
         searchButton.transform = CGAffineTransform(rotationAngle: 180)
         searchButton.layer.shadowOpacity = 0
         
-        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-            self.searchButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-            let fontSize: CGFloat = (self.isSearching ? 20 : 40)
-            self.searchTitle.font = UIFont(descriptor: UIFontDescriptor(name: "Pacifico-Regular", size: fontSize), size: fontSize)
-        }, completion: {
-            if $0 {
-                UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: {
-                    self.searchButton.transform = .identity
-                    self.searchButton.layer.shadowOpacity = 0.4
-                    self.searchButton.layer.shadowOffset = CGSize(width: 0, height: 3)
-                    self.searchButton.layer.shadowRadius = 2
-                })
-            }
-        })
+        UIView.animate(withDuration: 0.8, delay: 0,
+                       usingSpringWithDamping: 0.5,
+                       initialSpringVelocity: 1,
+                       options: .curveEaseIn,
+                       animations: {
+                            self.searchButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                            self.layoutIfNeeded()
+                        },
+                       completion: { (success) in
+                            if success {
+                                /*if self.isSearchMode {
+                                    self.titleStack.alignment = .bottom
+                                } else {
+                                    self.titleStack.alignment = .top
+                                }*/
+                                UIView.animate(withDuration: 0.3, animations: {
+                                    self.searchButton.transform = .identity
+                                    self.searchButton.layer.shadowOpacity = 0.4
+                                    self.searchButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+                                    self.searchButton.layer.shadowRadius = 2
+                                    self.layoutIfNeeded()
+                                })
+                                
+                                // hide/show the keyboard
+                                if self.isSearchMode {
+                                    self.searchBar.becomeFirstResponder()
+                                } else {
+                                    self.searchBar.resignFirstResponder()
+                                }
+                            }
+                        })
+    }
+    
+    func toggleSearchBar() {
+        isSearchMode = !isSearchMode
+        animate()
     }
 }
 
 extension SearchWidget: UISearchBarDelegate {
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        delegate?.searchBarTapped(searchKeyword: searchBar.text)
-        //        searchBar.resignFirstResponder()
+        
+        if let delegate = delegate {
+            delegate.searchBarTapped(searchKeyword: searchBar.text)
+        }
+        
+        // hides the keyboard when "Search" key was clicked.
+        searchBar.resignFirstResponder()
     }
 }

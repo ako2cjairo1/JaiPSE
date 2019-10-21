@@ -14,6 +14,12 @@
 		D534E8B1235423C600BACEDC /* StockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8B0235423C600BACEDC /* StockViewModel.swift */; };
 		D534E8B72354345E00BACEDC /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8B62354345E00BACEDC /* NetworkManager.swift */; };
 		D5613B6323573F1D003E35EE /* stocks.json in Resources */ = {isa = PBXBuildFile; fileRef = D5613B6223573F1D003E35EE /* stocks.json */; };
+		D597E926235B49D000C01882 /* LogHelperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E925235B49D000C01882 /* LogHelperController.swift */; };
+		D597E928235B4AC500C01882 /* HeaderSearchBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E927235B4AC500C01882 /* HeaderSearchBarController.swift */; };
+		D597E92A235B4C7F00C01882 /* FloatingButtonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E929235B4C7F00C01882 /* FloatingButtonController.swift */; };
+		D597E92C235B505E00C01882 /* SearchResultTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E92B235B505E00C01882 /* SearchResultTableViewController.swift */; };
+		D597E92E235C5D4B00C01882 /* FetchDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E92D235C5D4B00C01882 /* FetchDataController.swift */; };
+		D597E930235D853100C01882 /* ResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E92F235D853100C01882 /* ResultController.swift */; };
 		D5BAADC52355E118002BC340 /* ToastMessageWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BAADC42355E118002BC340 /* ToastMessageWidget.swift */; };
 		D5C91E812358761000B4EB40 /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C91E802358761000B4EB40 /* LogHelper.swift */; };
 		D5CA28DB234C2AD700596188 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA28DA234C2AD700596188 /* AppDelegate.swift */; };
@@ -36,6 +42,12 @@
 		D534E8B0235423C600BACEDC /* StockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockViewModel.swift; sourceTree = "<group>"; };
 		D534E8B62354345E00BACEDC /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		D5613B6223573F1D003E35EE /* stocks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stocks.json; sourceTree = "<group>"; };
+		D597E925235B49D000C01882 /* LogHelperController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogHelperController.swift; sourceTree = "<group>"; };
+		D597E927235B4AC500C01882 /* HeaderSearchBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSearchBarController.swift; sourceTree = "<group>"; };
+		D597E929235B4C7F00C01882 /* FloatingButtonController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButtonController.swift; sourceTree = "<group>"; };
+		D597E92B235B505E00C01882 /* SearchResultTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewController.swift; sourceTree = "<group>"; };
+		D597E92D235C5D4B00C01882 /* FetchDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchDataController.swift; sourceTree = "<group>"; };
+		D597E92F235D853100C01882 /* ResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultController.swift; sourceTree = "<group>"; };
 		D5BAADC42355E118002BC340 /* ToastMessageWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessageWidget.swift; sourceTree = "<group>"; };
 		D5C91E802358761000B4EB40 /* LogHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
 		D5CA28D7234C2AD700596188 /* JaiPSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JaiPSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,6 +111,18 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
+		D597E924235B492300C01882 /* StocksControllerExtension */ = {
+			isa = PBXGroup;
+			children = (
+				D597E927235B4AC500C01882 /* HeaderSearchBarController.swift */,
+				D597E925235B49D000C01882 /* LogHelperController.swift */,
+				D597E929235B4C7F00C01882 /* FloatingButtonController.swift */,
+				D597E92B235B505E00C01882 /* SearchResultTableViewController.swift */,
+				D597E92D235C5D4B00C01882 /* FetchDataController.swift */,
+			);
+			path = StocksControllerExtension;
+			sourceTree = "<group>";
+		};
 		D5CA28CE234C2AD700596188 = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +159,8 @@
 			isa = PBXGroup;
 			children = (
 				D5CA28F0234C2C6A00596188 /* StocksController.swift */,
+				D597E924235B492300C01882 /* StocksControllerExtension */,
+				D597E92F235D853100C01882 /* ResultController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -242,18 +268,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				D534E8B72354345E00BACEDC /* NetworkManager.swift in Sources */,
+				D597E92E235C5D4B00C01882 /* FetchDataController.swift in Sources */,
 				D5CA2903234C496200596188 /* UIViewExtension.swift in Sources */,
 				D534E8A0235066D500BACEDC /* StockAPIModel.swift in Sources */,
+				D597E930235D853100C01882 /* ResultController.swift in Sources */,
 				D534E8B1235423C600BACEDC /* StockViewModel.swift in Sources */,
+				D597E92C235B505E00C01882 /* SearchResultTableViewController.swift in Sources */,
 				D5EC453E234DDDE100485D51 /* StocksCellView.swift in Sources */,
 				D5CA28DB234C2AD700596188 /* AppDelegate.swift in Sources */,
+				D597E928235B4AC500C01882 /* HeaderSearchBarController.swift in Sources */,
 				D5BAADC52355E118002BC340 /* ToastMessageWidget.swift in Sources */,
 				D534E89B234F361400BACEDC /* FloatingActionButtonWidget.swift in Sources */,
 				D5C91E812358761000B4EB40 /* LogHelper.swift in Sources */,
+				D597E92A235B4C7F00C01882 /* FloatingButtonController.swift in Sources */,
 				D5CA2902234C496200596188 /* UIColorExtension.swift in Sources */,
 				D534E8AF2351FB5B00BACEDC /* SearchResultTableView.swift in Sources */,
 				D5CA28F1234C2C6A00596188 /* StocksController.swift in Sources */,
 				D5CA28DD234C2AD700596188 /* SceneDelegate.swift in Sources */,
+				D597E926235B49D000C01882 /* LogHelperController.swift in Sources */,
 				D5CA2905234C6B2400596188 /* SearchWidget.swift in Sources */,
 				D534E8AD2351FA0F00BACEDC /* SearchResultCell.swift in Sources */,
 				D5EC453B234DCD9800485D51 /* StocksHeaderView.swift in Sources */,

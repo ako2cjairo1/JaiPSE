@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum NetworkManagerErrors: String, Error {
+enum NetworkErrors: String, Error {
     case clientServerErrorResponse = "Client/Server Error."
     case invalidData = "Invalid data."
     case invalidURL = "Invalid URL."
@@ -16,7 +16,12 @@ enum NetworkManagerErrors: String, Error {
     case parseData = "Error parsing the data."
     case noConnection = "No Internet Connection"
     case noResponse = "No Response."
-    
+}
+
+enum FileErrors: String, Error {
+    case fileNotFound = "Resource file cannot be found."
+    case invalidData = "Invalid data."
+    case parseData = "Error parsing the data."
 }
 
 class NetworkManager {
@@ -28,19 +33,19 @@ class NetworkManager {
     // make sure for implementors not able to recreate an instance
     init() {}
     
-    /// Fetch a generic type JSON format Data from the url string provided.
-    func fetchData<T:Decodable>(of type: T.Type = T.self, from urlString: String, completion: @escaping(Result<T, NetworkManagerErrors>) -> Void) {
+    /// Fetch a generic JSON format Data from the url string provided.
+    func fetchOnline<T:Decodable>(of type: T.Type = T.self, from urlString: String, completion: @escaping(Result<T, NetworkErrors>) -> Void) {
         
         guard let url = URL(string: urlString) else {
-            logManager.createLog("\(NetworkManagerErrors.invalidURL.rawValue)\nURL: \(urlString)")
-            completion(.failure(NetworkManagerErrors.invalidURL))
+            logManager.createLog("\(NetworkErrors.invalidURL.rawValue)\nURL: \(urlString)")
+            completion(.failure(NetworkErrors.invalidURL))
             return
         }
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             if let error = error as NSError? {
-                var errorType: NetworkManagerErrors
+                var errorType: NetworkErrors
                 
                 switch error.code {
                 case -1009:
@@ -56,8 +61,8 @@ class NetworkManager {
             }
             
             guard let response = response as? HTTPURLResponse else {
-                self.logManager.createLog("\(NetworkManagerErrors.noResponse.rawValue)\n\n\(String(describing: error))")
-                completion(.failure(NetworkManagerErrors.noResponse))
+                self.logManager.createLog("\(NetworkErrors.noResponse.rawValue)\n\n\(String(describing: error))")
+                completion(.failure(NetworkErrors.noResponse))
                 return
             }
             
@@ -69,38 +74,47 @@ class NetworkManager {
                         completion(.success(jsonData))
                         
                     } catch let parseError {
-                        self.logManager.createLog("\(NetworkManagerErrors.parseData.rawValue)\n\(parseError)")
-                        completion(.failure(NetworkManagerErrors.parseData))
+                        self.logManager.createLog("\(NetworkErrors.parseData.rawValue)\n\(parseError)")
+                        completion(.failure(NetworkErrors.parseData))
                     }
                 } else {
-                    self.logManager.createLog("\(NetworkManagerErrors.invalidData.rawValue)")
-                    completion(.failure(NetworkManagerErrors.invalidData))
+                    self.logManager.createLog("\(NetworkErrors.invalidData.rawValue)")
+                    completion(.failure(NetworkErrors.invalidData))
                 }
             } else {
-                self.logManager.createLog("\(NetworkManagerErrors.clientServerErrorResponse.rawValue)\nStatus Code: \(response.statusCode). URL: \(urlString)")
-                completion(.failure(NetworkManagerErrors.clientServerErrorResponse))
+                self.logManager.createLog("\(NetworkErrors.clientServerErrorResponse.rawValue)\nStatus Code: \(response.statusCode). URL: \(urlString)")
+                completion(.failure(NetworkErrors.clientServerErrorResponse))
             }
         }.resume()
     }
     
-    func fetchData<T:Decodable>(fromFile file: String, to type: T.Type = T.self, completion: @escaping(T?, Error?) -> Void) {
-        var data: Data?
+    /// Fetch generic JSON format data from source file.
+    func fetchFromFile<T:Decodable>(of type: T.Type = T.self, fromFile file: String, completion: @escaping(Result<T, FileErrors>) -> Void) {
         
+        // convert bundle file path to URL string
         guard let bundledFile = Bundle.main.url(forResource: file, withExtension: nil) else {
+            logManager.createLog("\(FileErrors.fileNotFound.rawValue)\nFile: \(file)")
+            completion(.failure(FileErrors.fileNotFound))
             return
         }
         
         do {
-            data = try Data(contentsOf: bundledFile)
-        } catch {
-            completion(nil, error)
-        }
-        
-        do {
-            let jsonData = try JSONDecoder().decode(type, from: data!)
-            completion(jsonData, nil)
-        } catch let parseError {
-            completion(nil, parseError)
+            // Read the data from bundle file
+            let data: Data = try Data(contentsOf: bundledFile)
+            
+            do {
+                // Parse/Decode data to generic type
+                let jsonData = try JSONDecoder().decode(type, from: data)
+                completion(.success(jsonData))
+                
+            } catch let parseError {
+                self.logManager.createLog("\(FileErrors.parseData.rawValue)\n\(parseError)")
+                completion(.failure(FileErrors.parseData))
+            }
+            
+        } catch let dataError {
+            self.logManager.createLog("\(FileErrors.invalidData.rawValue)\n\(dataError)")
+            completion(.failure(FileErrors.invalidData))
         }
     }
 }
