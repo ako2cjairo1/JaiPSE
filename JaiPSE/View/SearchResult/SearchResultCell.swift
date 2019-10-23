@@ -18,11 +18,34 @@ class SearchResultCell: UITableViewCell {
         }
     }
     
+    var stockCellView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+//        view.layer.borderColor = UIColor.darkGray.cgColor
+//        view.layer.borderWidth = 0.5
+        view.layer.cornerRadius = 5
+        view.layer.shadowOffset = CGSize(width: 1, height: 1)
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowRadius = 2
+        view.layer.shadowColor = UIColor.white.cgColor
+        
+        return view
+    }()
+    
+    lazy var stack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [stockCode, stockName])
+        stack.axis = .vertical
+        stack.contentMode = .scaleAspectFill
+        stack.distribution = .fill
+        
+        return stack
+    }()
+    
     lazy var stockCode: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.textColor = .label
-        label.textAlignment = .right
+        
         return label
     }()
     
@@ -31,18 +54,15 @@ class SearchResultCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .secondaryLabel
         label.numberOfLines = 3
-        label.layer.borderWidth = 0.5
-        label.layer.borderColor = UIColor.black.cgColor
+
         return label
     }()
     
     var cellAddButton: UIButton = {
         let button = UIButton()
-//        button.imageView?.image = UIImage(systemName: "plus.circle")
-//        button.setTitle("ADD", for: .normal)
-        button.tintColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
-        button.layer.borderColor = UIColor.black.cgColor
-        button.layer.borderWidth = 1
+        let img = UIImage(systemName: "plus.circle.fill")
+        button.setBackgroundImage(img, for: .normal)
+        button.tintColor = #colorLiteral(red: 0.1946504414, green: 0.7753459811, blue: 0.3262496591, alpha: 1)
         
         return button
     }()
@@ -50,49 +70,40 @@ class SearchResultCell: UITableViewCell {
     // MARK: - Init
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
         setupView()
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         setupView()
     }
     
     // MARK: - Lifecycle
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
     
-    private func setupView() {        
-        addSubview(stockCode)
-        addSubview(cellAddButton)
-        addSubview(stockName)
+    private func setupView() {
+        backgroundColor = .clear
         
-        stockCode.anchorExt(top: topAnchor,
-                            leading: leadingAnchor, paddingLead: 16,
-                            bottom: bottomAnchor,
-                            centerVertical: centerYAnchor, width: 80)
+        addSubview(stockCellView)
+        stockCellView.addSubview(cellAddButton)
+        stockCellView.addSubview(stack)
         
-        cellAddButton.anchorExt(top: topAnchor,
-                                leading: stockName.trailingAnchor, paddingLead: 5,
-                                bottom: bottomAnchor,
-                                trailing: trailingAnchor, paddingTrail: 5,
-                                centerVertical: centerYAnchor,
-                                width: frame.height)
+        // setup component's anchors
+        stockCellView.anchorExt(top: topAnchor, paddingTop: 2,
+                                leading: leadingAnchor, paddingLead: 10,
+                                bottom: bottomAnchor, paddingBottom: 2,
+                                trailing: trailingAnchor, paddingTrail: 10)
         
-        stockName.anchorExt(top: topAnchor,
-                            leading: stockCode.trailingAnchor, paddingLead: 10,
-                            bottom: bottomAnchor,
-                            trailing: cellAddButton.leadingAnchor,
-                            centerVertical: centerYAnchor,
-                            height: 30)
+        cellAddButton.anchorExt(leading: stockCellView.leadingAnchor, paddingLead: 16,
+                                centerVertical: stockCellView.centerYAnchor,
+                                width: 25, height: 25)
         
-        let img = UIImage(systemName: "plus.circle")
-        cellAddButton.setBackgroundImage(img, for: .normal)
+        stack.anchorExt(leading: cellAddButton.trailingAnchor, paddingLead: 16,
+                        trailing: stockCellView.trailingAnchor, paddingTrail: 16,
+                        centerVertical: centerYAnchor)
         
     }
 

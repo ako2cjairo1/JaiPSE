@@ -14,7 +14,16 @@ class SearchResultTableView: UIView {
     var searchResultData = [StockViewModel]() {
         didSet {
             searchResultTV.reloadData()
-            numberOfResult.text = "\(searchResultData.count > 0 ? String(describing: searchResultData.count) : "No") result(s) found."
+            
+            numberOfResult.alpha = 0
+            numberOfResult.transform = CGAffineTransform(translationX: 0, y: -numberOfResult.frame.size.height)
+            
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                self.numberOfResult.text = "\(self.searchResultData.count > 0 ? String(describing: self.searchResultData.count) : "No") result(s) found."
+                self.numberOfResult.transform = .identity
+                self.numberOfResult.alpha = 1
+                self.numberOfResult.layer.opacity = 0.95
+            })
         }
     }
     var isHideSearchResult = false {
@@ -27,7 +36,12 @@ class SearchResultTableView: UIView {
     }
     
     lazy var searchResultTV: UITableView = {
-        let tv = UITableView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), style: .grouped)
+        let tv = UITableView()
+        tv.rowHeight = 65
+        tv.layer.cornerRadius = 25
+        tv.backgroundColor = .darkGray
+        tv.separatorStyle = .none
+
         return tv
     }()
     
@@ -37,6 +51,13 @@ class SearchResultTableView: UIView {
         label.font = UIFont.systemFont(ofSize: 14)
         label.text = nil
         label.textColor = .white
+        label.backgroundColor = .darkGray
+        
+        label.layer.cornerRadius = 20
+        label.layer.shadowOpacity = 0.3
+        label.layer.shadowOffset = CGSize(width: 0, height: 15)
+        label.layer.shadowRadius = 10
+        label.alpha = 0
         
         return label
     }()
@@ -57,28 +78,20 @@ class SearchResultTableView: UIView {
     // MARK: - Lifecycle
     private func setupView() {
         backgroundColor = .clear
-        
         addSubview(searchResultTV)
+        
+        // setup component anchors
         searchResultTV.anchorExt(top: topAnchor,
-                           leading: leadingAnchor,
-                           bottom: bottomAnchor,
-                           trailing: trailingAnchor,
-                           centerHorizontal: centerXAnchor,
-                           centerVertical: centerYAnchor,
-                           width: frame.width, height: frame.height)
-        searchResultTV.rowHeight = 40
-        searchResultTV.layer.cornerRadius = 25
-        searchResultTV.backgroundColor = .darkGray
+                                 leading: leadingAnchor,
+                                 bottom: bottomAnchor,
+                                 trailing: trailingAnchor,
+                                 centerHorizontal: centerXAnchor,
+                                 centerVertical: centerYAnchor,
+                                 width: frame.width, height: frame.height)
         
-        searchResultTV.tableHeaderView?.addSubview(numberOfResult)
-        numberOfResult.anchorExt(top: searchResultTV.tableHeaderView?.topAnchor,
-                                 leading: searchResultTV.tableHeaderView?.leadingAnchor,
-                                 trailing: searchResultTV.tableHeaderView?.trailingAnchor,
-                                 height: 50)
-        
-        searchResultTV.tableFooterView?.addSubview(UIView(frame: .init(x: 0, y: 0, width: 400, height: superview?.safeAreaInsets.bottom ?? 50)))
-        
+        // Register custom cell
         searchResultTV.register(SearchResultCell.self, forCellReuseIdentifier: String(describing: SearchResultCell.self))
+        
         searchResultTV.dataSource = self
         searchResultTV.delegate = self
     }
@@ -95,8 +108,8 @@ extension SearchResultTableView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SearchResultCell.self), for: indexPath) as! SearchResultCell
-        
         cell.stockData = searchResultData[indexPath.row]
+        
         return cell
     }
 }
@@ -107,7 +120,15 @@ extension SearchResultTableView: UITableViewDelegate {
         numberOfResult.anchorExt(top: topAnchor,
                                  leading: leadingAnchor,
                                  trailing: trailingAnchor,
-                                 height: 30)
+                                 height: 40)
         return numberOfResult
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 70
     }
 }

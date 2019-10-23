@@ -15,28 +15,29 @@ enum FetchMode {
 
 extension StocksController {
     
-    internal func fetchStocks(mode: FetchMode, fromUrl urlString: String, isFilteredByUserDefaults: Bool? = true, searchKeyword: String? = "", completion: @escaping([StockViewModel]?) -> Void) {
+    internal func fetchStocks(mode: FetchMode, isFilteredByUserDefaults: Bool? = true, searchKeyword: String? = "", completion: @escaping([StockViewModel]?) -> Void) {
+        
+        let controller = ResultController(requestingView: self.view,
+                                          fetchMode: mode,
+                                          filterByUserDefaults: isFilteredByUserDefaults,
+                                          searchKeyword: searchKeyword)
         
         switch mode {
             case .online:
-                NetworkManager.shared.fetchOnline(of: StockAPIModel.self, from: urlString) { (result) in
-                    
+                NetworkManager.shared.fetchOnline(of: StockAPIModel.self, from: Constant.urlStocks) {
+                    (result) in
                     DispatchQueue.main.async {
-                        let controller = ResultController(requestingView: self.view, fetchMode: mode, filterByUserDefaults: isFilteredByUserDefaults, searchKeyword: searchKeyword)
-                        
                         completion(controller.process(result))
                     }
                 }
                 break
                 
             case .fileResource:
-                NetworkManager.shared.fetchFromFile(of: StockAPIModel.self, fromFile: urlString) { (result) in
-                    
+                NetworkManager.shared.fetchFromFile(of: StockAPIModel.self, fromFile: Constant.urlOfflineData) {
+                    (result) in
                     DispatchQueue.main.async {
                         DispatchQueue.main.async {
-                            let resultController = ResultController(requestingView: self.view, fetchMode: mode, filterByUserDefaults: isFilteredByUserDefaults, searchKeyword: searchKeyword)
-                            
-                            completion(resultController.process(result))
+                            completion(controller.process(result))
                         }
                     }
                 }

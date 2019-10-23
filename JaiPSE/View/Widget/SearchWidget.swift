@@ -22,7 +22,7 @@ class SearchWidget: UIView {
     var isSearchMode: Bool = true {
         didSet {
     
-            let titleFontSize: CGFloat = (isSearchMode ? 30 : 55)
+            let titleFontSize: CGFloat = (isSearchMode ? 30 : 50)
             titleLabel.font = UIFont.boldSystemFont(ofSize: titleFontSize)
             
             let dateFontSize: CGFloat = (isSearchMode ? 15 : 20)
@@ -70,6 +70,9 @@ class SearchWidget: UIView {
         label.text = "Stocks"
         label.textColor = .darkText
         
+//        label.layer.borderColor = UIColor.red.cgColor
+//        label.layer.borderWidth = 0.5
+        
         return label
     }()
     
@@ -82,6 +85,9 @@ class SearchWidget: UIView {
         label.textAlignment = .right
         label.textColor = .darkGray
         
+//        label.layer.borderColor = UIColor.red.cgColor
+//        label.layer.borderWidth = 0.5
+        
         return label
     }()
     
@@ -89,6 +95,9 @@ class SearchWidget: UIView {
         let button = UIButton()
         button.addTarget(self, action: #selector(searchStock), for: .touchUpInside)
         button.tintColor = .darkGray
+        
+//        button.layer.borderColor = UIColor.red.cgColor
+//        button.layer.borderWidth = 0.5
         
         return button
     }()
@@ -99,8 +108,11 @@ class SearchWidget: UIView {
         searchBar.searchTextField.layer.borderColor = UIColor.orange.cgColor
         searchBar.searchTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 20)
         searchBar.tintColor = .darkGray
-        searchBar.placeholder = "Company name / Stock Code"
+        searchBar.placeholder = "Company name or Stock Code"
         searchBar.delegate = self
+        
+//        searchBar.layer.borderColor = UIColor.red.cgColor
+//        searchBar.layer.borderWidth = 0.5
         
         return searchBar
     }()
@@ -150,8 +162,8 @@ class SearchWidget: UIView {
     
     fileprivate func setAnchors() {
         titleStack.anchorExt(top: topAnchor, paddingTop: 45, leading: leadingAnchor, paddingLead: 16, trailing: trailingAnchor, paddingTrail: 16)
-        searchBar.anchorExt(top: titleStack.bottomAnchor, leading: leadingAnchor, paddingLead: 17, trailing: searchButton.leadingAnchor, paddingTrail: 7)
-        searchButton.anchorExt(bottom: bottomAnchor, paddingBottom: 15, trailing: trailingAnchor, paddingTrail: 16, width: 40, height: 40)
+        searchBar.anchorExt(top: titleStack.bottomAnchor, leading: leadingAnchor, paddingLead: 12, trailing: searchButton.leadingAnchor, paddingTrail: 7, height: 45)
+        searchButton.anchorExt(bottom: bottomAnchor, paddingBottom: 18, trailing: trailingAnchor, paddingTrail: 16, width: 40, height: 40)
     }
     
     fileprivate func animate() {

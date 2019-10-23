@@ -20,7 +20,7 @@ extension StocksController: SearchButtonDelegate {
             
         } else {
             if headerSearchBar.searchWidget.isSearchMode {
-                fetchStocks(mode: .online, fromUrl: Constant.urlStocks, isFilteredByUserDefaults: true) { (result) in
+                fetchStocks(mode: .fileResource, isFilteredByUserDefaults: true) { (result) in
                     if let stockVMData = result {
                         self.stocksData = stockVMData
                     }
@@ -35,8 +35,8 @@ extension StocksController: SearchButtonDelegate {
         if let searchKeyword = searchKeyword {
             let filterUserDefaults = floatingButton.toggleFloatingButton ? false : true
             
-            fetchStocks(mode: .online, fromUrl: Constant.urlStocks, isFilteredByUserDefaults: filterUserDefaults, searchKeyword: searchKeyword) { (result) in
-                
+            fetchStocks(mode: .fileResource, isFilteredByUserDefaults: filterUserDefaults, searchKeyword: searchKeyword) {
+                (result) in
                 if let stockVMData = result {
                     if self.floatingButton.toggleFloatingButton {
                         self.searchResultTableView.searchResultData = stockVMData

@@ -48,8 +48,9 @@ class StocksController: UICollectionViewController {
         setupStocksCollectionView()
         setupSearchResultTableView()
         setupFloatingButton()
-        
-        fetchStocks(mode: .online, fromUrl: Constant.urlStocks, isFilteredByUserDefaults: true) { (result) in            
+        //UserDefaults.standard.setValue(["JFC","NOW","ALI","MBT","PCOR","SMC","URC"], forKey: "stockNames")
+        fetchStocks(mode: .fileResource, isFilteredByUserDefaults: true) {
+            (result) in
             DispatchQueue.main.async {
                 if let stockVMData = result {
                     self.stocksData = stockVMData
@@ -58,11 +59,10 @@ class StocksController: UICollectionViewController {
         }
         
         /*
-         TODO: use this code for adding new a new stocks to watch
-         --> UserDefaults.standard.setValue(stocksArray, forKey: "stockNames")
-         To remove:
-         --> UserDefaults.standard.removeObject(forKey: "stockNames")
-         */
+         TODO: use this code for adding new a new stocks to watch*/
+         
+         // To remove:
+         // UserDefaults.standard.removeObject(forKey: "stockNames")
     }
 }
 
