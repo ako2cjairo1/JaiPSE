@@ -9,30 +9,79 @@
 import UIKit
 
 class SearchResultCell: UITableViewCell {
-
+    
     // MARK: - Properties
     var stockData: StockViewModel? {
         didSet {
-            stockCode.text = stockData?.symbol
-            stockName.text = stockData?.name
+            if let symbol = self.stockData?.symbol {
+                stockCode.text = symbol
+            }
+            if let name = self.stockData?.name {
+                stockName.text = name
+            }
+            if let price = self.stockData?.price {
+                stockPrice.text = "\(price)"
+            }
+            if let percent = self.stockData?.percentChange {
+                var formattedPercent: String = "0.00"
+                
+                if percent < 0 {
+                    formattedPercent = String(format: "%.2f", percent)
+                    stockPercentChange.textColor = .white
+                    stockPercentChange.backgroundColor = #colorLiteral(red: 0.9645465016, green: 0.2221286595, blue: 0.182257086, alpha: 1)
+                    stockPercentChange.layer.borderColor = stockPercentChange.backgroundColor?.cgColor
+                    
+                } else if percent > 0 {
+                    formattedPercent = "+\(String(format: "%.2f", percent))"
+                    stockPercentChange.textColor = .white
+                    stockPercentChange.backgroundColor = #colorLiteral(red: 0.2797255516, green: 0.8248286843, blue: 0.3802976012, alpha: 1)
+                    stockPercentChange.layer.borderColor = stockPercentChange.backgroundColor?.cgColor
+                }
+                
+                stockPercentChange.text = " \(formattedPercent)%."
+            }
         }
     }
     
-    var stockCellView: UIView = {
+    var stockCellContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
-//        view.layer.borderColor = UIColor.darkGray.cgColor
-//        view.layer.borderWidth = 0.5
+        //view.backgroundColor = UIColor.cellBgColor
+        //        view.layer.borderColor = UIColor.darkGray.cgColor
+        //        view.layer.borderWidth = 0.5
+        //view.layer.cornerRadius = 7
+//        view.layer.shadowOffset = CGSize(width: 1, height: 1)
+//        view.layer.shadowOpacity = 0.5
+//        view.layer.shadowRadius = 2
+//        view.layer.shadowColor = UIColor.white.cgColor
+        
+        view.backgroundColor = .cellBgColor
+        view.layer.borderColor = UIColor.darkGray.cgColor
+        view.layer.borderWidth = 0.5
         view.layer.cornerRadius = 5
-        view.layer.shadowOffset = CGSize(width: 1, height: 1)
+        view.layer.shadowOffset = CGSize(width: 2, height: 6)
         view.layer.shadowOpacity = 0.5
-        view.layer.shadowRadius = 2
-        view.layer.shadowColor = UIColor.white.cgColor
+        view.layer.shadowRadius = 8
+        view.layer.shadowColor = UIColor.black.cgColor
         
         return view
     }()
     
-    lazy var stack: UIStackView = {
+    var addButton: UIButton = {
+        let button = UIButton()
+        let img = UIImage(systemName: "plus.circle.fill")
+        button.setBackgroundImage(img, for: .normal)
+        button.tintColor = #colorLiteral(red: 0.1946504414, green: 0.7753459811, blue: 0.3262496591, alpha: 1)
+//        button.layer.backgroundColor = UIColor.white.cgColor
+//        button.layer.cornerRadius = 12.5
+//        button.layer.masksToBounds = true
+        
+//        button.layer.borderColor = UIColor.red.cgColor
+//        button.layer.borderWidth = 0.5
+        
+        return button
+    }()
+    
+    lazy var stockCodeAndNameStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [stockCode, stockName])
         stack.axis = .vertical
         stack.contentMode = .scaleAspectFill
@@ -44,27 +93,65 @@ class SearchResultCell: UITableViewCell {
     lazy var stockCode: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.textColor = .label
+        label.textColor = .white
+        
+//        label.layer.borderColor = UIColor.red.cgColor
+//        label.layer.borderWidth = 0.5
         
         return label
     }()
     
     lazy var stockName: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = .secondaryLabel
-        label.numberOfLines = 3
-
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textColor = .lightText
+        label.allowsDefaultTighteningForTruncation = true
+        
+//         label.layer.borderColor = UIColor.red.cgColor
+//         label.layer.borderWidth = 0.5
+        
         return label
     }()
     
-    var cellAddButton: UIButton = {
-        let button = UIButton()
-        let img = UIImage(systemName: "plus.circle.fill")
-        button.setBackgroundImage(img, for: .normal)
-        button.tintColor = #colorLiteral(red: 0.1946504414, green: 0.7753459811, blue: 0.3262496591, alpha: 1)
+    lazy var stockPriceAndPercentStack: UIView = {
+        let view = UIView()
+//        view.layer.borderColor = UIColor.red.cgColor
+//        view.layer.borderWidth = 0.5
         
-        return button
+        view.addSubview(self.stockPercentChange)
+        view.addSubview(self.stockPrice)
+//        self.stockPercentChange.anchorExt(top: view.topAnchor, trailing: view.trailingAnchor, height: 15)
+//        self.stockPrice.anchorExt(top: self.stockPercentChange.bottomAnchor, trailing: view.trailingAnchor)
+        self.stockPrice.anchorExt(top: view.topAnchor, trailing: view.trailingAnchor, height: 25)
+        self.stockPercentChange.anchorExt(top: self.stockPrice.bottomAnchor, trailing: view.trailingAnchor)
+        
+        return view
+    }()
+    
+    lazy var stockPercentChange: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        label.textColor = .black
+        label.textAlignment = .right
+        label.backgroundColor = .lightGray
+        
+        label.layer.borderColor = label.backgroundColor?.cgColor
+        label.layer.cornerRadius = 7
+        label.layer.borderWidth = 2
+        label.layer.masksToBounds = true
+        
+        return label
+    }()
+    
+    lazy var stockPrice: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        label.textAlignment = .right
+        label.textColor = .white
+        
+//        label.layer.borderColor = UIColor.red.cgColor
+//        label.layer.borderWidth = 0.5
+        return label
     }()
     
     // MARK: - Init
@@ -87,24 +174,28 @@ class SearchResultCell: UITableViewCell {
     private func setupView() {
         backgroundColor = .clear
         
-        addSubview(stockCellView)
-        stockCellView.addSubview(cellAddButton)
-        stockCellView.addSubview(stack)
+        addSubview(stockCellContainerView)
+        stockCellContainerView.addSubview(addButton)
+        stockCellContainerView.addSubview(stockCodeAndNameStack)
+        stockCellContainerView.addSubview(stockPriceAndPercentStack)
         
-        // setup component's anchors
-        stockCellView.anchorExt(top: topAnchor, paddingTop: 2,
-                                leading: leadingAnchor, paddingLead: 10,
-                                bottom: bottomAnchor, paddingBottom: 2,
-                                trailing: trailingAnchor, paddingTrail: 10)
+        // setup container view's anchors
+        stockCellContainerView.anchorExt(top: topAnchor, paddingTop: 2,
+                                         leading: leadingAnchor, paddingLead: 10,
+                                         bottom: bottomAnchor, paddingBottom: 2,
+                                         trailing: trailingAnchor, paddingTrail: 10)
         
-        cellAddButton.anchorExt(leading: stockCellView.leadingAnchor, paddingLead: 16,
-                                centerVertical: stockCellView.centerYAnchor,
-                                width: 25, height: 25)
+        addButton.anchorExt(leading: stockCellContainerView.leadingAnchor, paddingLead: 16,
+                            centerVertical: stockCellContainerView.centerYAnchor,
+                            width: 25, height: 25)
         
-        stack.anchorExt(leading: cellAddButton.trailingAnchor, paddingLead: 16,
-                        trailing: stockCellView.trailingAnchor, paddingTrail: 16,
-                        centerVertical: centerYAnchor)
+        stockPriceAndPercentStack.anchorExt(trailing: stockCellContainerView.trailingAnchor, paddingTrail: 16,
+                                            centerVertical: stockCellContainerView.centerYAnchor,
+                                            width: 80, height: 40)
         
+        stockCodeAndNameStack.anchorExt(leading: addButton.trailingAnchor, paddingLead: 16,
+                                        trailing: stockPriceAndPercentStack.leadingAnchor,
+                                        centerVertical: centerYAnchor)
     }
-
+    
 }

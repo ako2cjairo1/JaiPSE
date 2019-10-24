@@ -49,7 +49,7 @@ class StocksController: UICollectionViewController {
         setupSearchResultTableView()
         setupFloatingButton()
         //UserDefaults.standard.setValue(["JFC","NOW","ALI","MBT","PCOR","SMC","URC"], forKey: "stockNames")
-        fetchStocks(mode: .fileResource, isFilteredByUserDefaults: true) {
+        fetchStocks(isFilteredByUserDefaults: true) {
             (result) in
             DispatchQueue.main.async {
                 if let stockVMData = result {
@@ -86,6 +86,14 @@ extension StocksController {
         collectionView.delegate = self
         collectionView.dataSource = self
     }
+    
+    internal func reloadStocks(isFilteredByUserDefaults toggle: Bool? = true) {
+        fetchStocks(isFilteredByUserDefaults: toggle) { (result) in
+            if let stockVMData = result {
+                self.stocksData = stockVMData
+            }
+        }
+    }
 }
 
 // MARK: - CollectionView Delegate/Datasource
@@ -107,6 +115,16 @@ extension StocksController {
         cell.stockData = self.stocksData[indexPath.row]
         
         return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        cell.alpha = 0
+        cell.layer.transform = CATransform3DTranslate(CATransform3DIdentity, 0, 20, 0)
+        
+        UIView.animate(withDuration: 0.7, delay: 0.2, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            cell.alpha = 1
+            cell.layer.transform = CATransform3DIdentity
+        })
     }
 }
 

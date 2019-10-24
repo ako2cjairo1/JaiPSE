@@ -57,7 +57,7 @@ class ToastMessageWidget {
         messageContainer.transform = CGAffineTransform(translationX: 0, y: containerHeight)
         messageContainer.alpha = 0
         
-        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 10, initialSpringVelocity: 30, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.messageContainer.transform = CGAffineTransform(translationX: 0, y: -self.containerHeight)
             self.messageContainer.alpha = 1
         })

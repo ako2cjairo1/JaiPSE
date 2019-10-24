@@ -14,6 +14,9 @@ protocol SearchButtonDelegate {
     func searchButtonTapped()
     /// A delegate function of SearchWidget (custom class) that responds to when the "Search" key was tapped.
     func searchBarTapped(searchKeyword: String?)
+    
+    /// A delegate function of SearchWidget (custom class) that responds to when a user change search value.
+    func searchBarTextDidChange(_ searchBar: UISearchBar, searchKeyword: String)
 }
 
 class SearchWidget: UIView {
@@ -219,5 +222,12 @@ extension SearchWidget: UISearchBarDelegate {
         
         // hides the keyboard when "Search" key was clicked.
         searchBar.resignFirstResponder()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if let delegate = delegate {
+            delegate.searchBarTextDidChange(searchBar, searchKeyword: searchText)
+        }
     }
 }

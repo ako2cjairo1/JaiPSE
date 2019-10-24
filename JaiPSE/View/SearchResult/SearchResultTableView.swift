@@ -13,7 +13,7 @@ class SearchResultTableView: UIView {
     // MARK: - Properties
     var searchResultData = [StockViewModel]() {
         didSet {
-            searchResultTV.reloadData()
+            searchResultTableView.reloadData()
             
             numberOfResult.alpha = 0
             numberOfResult.transform = CGAffineTransform(translationX: 0, y: -numberOfResult.frame.size.height)
@@ -35,7 +35,7 @@ class SearchResultTableView: UIView {
         }
     }
     
-    lazy var searchResultTV: UITableView = {
+    lazy var searchResultTableView: UITableView = {
         let tv = UITableView()
         tv.rowHeight = 65
         tv.layer.cornerRadius = 25
@@ -78,10 +78,10 @@ class SearchResultTableView: UIView {
     // MARK: - Lifecycle
     private func setupView() {
         backgroundColor = .clear
-        addSubview(searchResultTV)
+        addSubview(searchResultTableView)
         
         // setup component anchors
-        searchResultTV.anchorExt(top: topAnchor,
+        searchResultTableView.anchorExt(top: topAnchor,
                                  leading: leadingAnchor,
                                  bottom: bottomAnchor,
                                  trailing: trailingAnchor,
@@ -90,10 +90,10 @@ class SearchResultTableView: UIView {
                                  width: frame.width, height: frame.height)
         
         // Register custom cell
-        searchResultTV.register(SearchResultCell.self, forCellReuseIdentifier: String(describing: SearchResultCell.self))
+        searchResultTableView.register(SearchResultCell.self, forCellReuseIdentifier: String(describing: SearchResultCell.self))
         
-        searchResultTV.dataSource = self
-        searchResultTV.delegate = self
+        searchResultTableView.dataSource = self
+        searchResultTableView.delegate = self
     }
 }
 
@@ -124,11 +124,25 @@ extension SearchResultTableView: UITableViewDelegate {
         return numberOfResult
     }
     
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 80
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 70
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.alpha = 0
+        cell.layer.transform = CATransform3DTranslate(CATransform3DIdentity, 0, 20, 0)
+        
+        UIView.animate(withDuration: 0.7, delay: 0.2, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            cell.alpha = 1
+            cell.layer.transform = CATransform3DIdentity
+        })
     }
 }

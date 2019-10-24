@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D534E89B234F361400BACEDC /* FloatingActionButtonWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E89A234F361400BACEDC /* FloatingActionButtonWidget.swift */; };
+		D534E89B234F361400BACEDC /* FloatingButtonWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E89A234F361400BACEDC /* FloatingButtonWidget.swift */; };
 		D534E8A0235066D500BACEDC /* StockAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E89F235066D500BACEDC /* StockAPIModel.swift */; };
 		D534E8AD2351FA0F00BACEDC /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8AB2351FA0F00BACEDC /* SearchResultCell.swift */; };
 		D534E8AF2351FB5B00BACEDC /* SearchResultTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8AE2351FB5B00BACEDC /* SearchResultTableView.swift */; };
@@ -15,8 +15,8 @@
 		D534E8B72354345E00BACEDC /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8B62354345E00BACEDC /* NetworkManager.swift */; };
 		D5613B6323573F1D003E35EE /* stocks.json in Resources */ = {isa = PBXBuildFile; fileRef = D5613B6223573F1D003E35EE /* stocks.json */; };
 		D597E926235B49D000C01882 /* LogHelperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E925235B49D000C01882 /* LogHelperController.swift */; };
-		D597E928235B4AC500C01882 /* HeaderSearchBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E927235B4AC500C01882 /* HeaderSearchBarController.swift */; };
-		D597E92A235B4C7F00C01882 /* FloatingButtonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E929235B4C7F00C01882 /* FloatingButtonController.swift */; };
+		D597E928235B4AC500C01882 /* SearchWidgetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E927235B4AC500C01882 /* SearchWidgetController.swift */; };
+		D597E92A235B4C7F00C01882 /* FloatingButtonWidgetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E929235B4C7F00C01882 /* FloatingButtonWidgetController.swift */; };
 		D597E92C235B505E00C01882 /* SearchResultTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E92B235B505E00C01882 /* SearchResultTableViewController.swift */; };
 		D597E92E235C5D4B00C01882 /* FetchDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E92D235C5D4B00C01882 /* FetchDataController.swift */; };
 		D597E930235D853100C01882 /* ResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E92F235D853100C01882 /* ResultController.swift */; };
@@ -35,7 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D534E89A234F361400BACEDC /* FloatingActionButtonWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingActionButtonWidget.swift; sourceTree = "<group>"; };
+		D534E89A234F361400BACEDC /* FloatingButtonWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButtonWidget.swift; sourceTree = "<group>"; };
 		D534E89F235066D500BACEDC /* StockAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockAPIModel.swift; sourceTree = "<group>"; };
 		D534E8AB2351FA0F00BACEDC /* SearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		D534E8AE2351FB5B00BACEDC /* SearchResultTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultTableView.swift; sourceTree = "<group>"; };
@@ -43,8 +43,8 @@
 		D534E8B62354345E00BACEDC /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		D5613B6223573F1D003E35EE /* stocks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stocks.json; sourceTree = "<group>"; };
 		D597E925235B49D000C01882 /* LogHelperController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogHelperController.swift; sourceTree = "<group>"; };
-		D597E927235B4AC500C01882 /* HeaderSearchBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSearchBarController.swift; sourceTree = "<group>"; };
-		D597E929235B4C7F00C01882 /* FloatingButtonController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButtonController.swift; sourceTree = "<group>"; };
+		D597E927235B4AC500C01882 /* SearchWidgetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWidgetController.swift; sourceTree = "<group>"; };
+		D597E929235B4C7F00C01882 /* FloatingButtonWidgetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButtonWidgetController.swift; sourceTree = "<group>"; };
 		D597E92B235B505E00C01882 /* SearchResultTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewController.swift; sourceTree = "<group>"; };
 		D597E92D235C5D4B00C01882 /* FetchDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchDataController.swift; sourceTree = "<group>"; };
 		D597E92F235D853100C01882 /* ResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultController.swift; sourceTree = "<group>"; };
@@ -111,16 +111,16 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
-		D597E924235B492300C01882 /* StocksControllerExtension */ = {
+		D597E924235B492300C01882 /* StocksController */ = {
 			isa = PBXGroup;
 			children = (
-				D597E927235B4AC500C01882 /* HeaderSearchBarController.swift */,
+				D5CA28F0234C2C6A00596188 /* StocksController.swift */,
+				D597E927235B4AC500C01882 /* SearchWidgetController.swift */,
 				D597E925235B49D000C01882 /* LogHelperController.swift */,
-				D597E929235B4C7F00C01882 /* FloatingButtonController.swift */,
+				D597E929235B4C7F00C01882 /* FloatingButtonWidgetController.swift */,
 				D597E92B235B505E00C01882 /* SearchResultTableViewController.swift */,
-				D597E92D235C5D4B00C01882 /* FetchDataController.swift */,
 			);
-			path = StocksControllerExtension;
+			path = StocksController;
 			sourceTree = "<group>";
 		};
 		D5CA28CE234C2AD700596188 = {
@@ -158,8 +158,8 @@
 		D5CA28EF234C2BCE00596188 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				D5CA28F0234C2C6A00596188 /* StocksController.swift */,
-				D597E924235B492300C01882 /* StocksControllerExtension */,
+				D597E924235B492300C01882 /* StocksController */,
+				D597E92D235C5D4B00C01882 /* FetchDataController.swift */,
 				D597E92F235D853100C01882 /* ResultController.swift */,
 			);
 			path = Controller;
@@ -168,11 +168,11 @@
 		D5CA28F2234C2D9100596188 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D5CA28FB234C48CA00596188 /* Extension */,
+				D534E8A5235099F700BACEDC /* SearchResult */,
+				D5EC453C234DDC0A00485D51 /* Widget */,
 				D5EC453D234DDDE100485D51 /* StocksCellView.swift */,
 				D5EC453A234DCD9800485D51 /* StocksHeaderView.swift */,
-				D534E8A5235099F700BACEDC /* SearchResult */,
-				D5CA28FB234C48CA00596188 /* Extension */,
-				D5EC453C234DDC0A00485D51 /* Widget */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -190,7 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				D5CA2904234C6B2400596188 /* SearchWidget.swift */,
-				D534E89A234F361400BACEDC /* FloatingActionButtonWidget.swift */,
+				D534E89A234F361400BACEDC /* FloatingButtonWidget.swift */,
 				D5BAADC42355E118002BC340 /* ToastMessageWidget.swift */,
 			);
 			path = Widget;
@@ -276,11 +276,11 @@
 				D597E92C235B505E00C01882 /* SearchResultTableViewController.swift in Sources */,
 				D5EC453E234DDDE100485D51 /* StocksCellView.swift in Sources */,
 				D5CA28DB234C2AD700596188 /* AppDelegate.swift in Sources */,
-				D597E928235B4AC500C01882 /* HeaderSearchBarController.swift in Sources */,
+				D597E928235B4AC500C01882 /* SearchWidgetController.swift in Sources */,
 				D5BAADC52355E118002BC340 /* ToastMessageWidget.swift in Sources */,
-				D534E89B234F361400BACEDC /* FloatingActionButtonWidget.swift in Sources */,
+				D534E89B234F361400BACEDC /* FloatingButtonWidget.swift in Sources */,
 				D5C91E812358761000B4EB40 /* LogHelper.swift in Sources */,
-				D597E92A235B4C7F00C01882 /* FloatingButtonController.swift in Sources */,
+				D597E92A235B4C7F00C01882 /* FloatingButtonWidgetController.swift in Sources */,
 				D5CA2902234C496200596188 /* UIColorExtension.swift in Sources */,
 				D534E8AF2351FB5B00BACEDC /* SearchResultTableView.swift in Sources */,
 				D5CA28F1234C2C6A00596188 /* StocksController.swift in Sources */,

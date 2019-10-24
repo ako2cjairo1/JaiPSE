@@ -15,14 +15,14 @@ enum FetchMode {
 
 extension StocksController {
     
-    internal func fetchStocks(mode: FetchMode, isFilteredByUserDefaults: Bool? = true, searchKeyword: String? = "", completion: @escaping([StockViewModel]?) -> Void) {
+    internal func fetchStocks(mode: FetchMode? = .online, isFilteredByUserDefaults: Bool? = true, searchKeyword: String? = "", completion: @escaping([StockViewModel]?) -> Void) {
         
         let controller = ResultController(requestingView: self.view,
-                                          fetchMode: mode,
+                                          fetchMode: mode!,
                                           filterByUserDefaults: isFilteredByUserDefaults,
                                           searchKeyword: searchKeyword)
         
-        switch mode {
+        switch mode! {
             case .online:
                 NetworkManager.shared.fetchOnline(of: StockAPIModel.self, from: Constant.urlStocks) {
                     (result) in

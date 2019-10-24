@@ -14,10 +14,10 @@ extension StocksController {
         view.addSubview(searchResultTableView)
         searchResultTableView.anchorExt(leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, height: view.frame.size.height - 170)
         
-        searchResultViewAnimateOut()
+        searchResultAnimateOut()
     }
     
-    internal func searchResultViewAnimateIn() {
+    internal func searchResultAnimateIn() {
         searchResultTableView.alpha = 0
         searchResultTableView.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height - 170)
         
@@ -27,12 +27,12 @@ extension StocksController {
         })
     }
     
-    internal func searchResultViewAnimateOut() {
+    internal func searchResultAnimateOut() {
         floatingButton.toggleAnimation()
         searchResultTableView.alpha = 1
         searchResultTableView.transform = .identity
         
-        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 5, initialSpringVelocity: 15, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
             self.searchResultTableView.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - 170)
             self.searchResultTableView.alpha = 0.5
             
