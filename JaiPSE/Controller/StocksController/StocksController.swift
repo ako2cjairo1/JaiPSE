@@ -15,8 +15,8 @@ enum ActionType: String {
 
 struct Constant {
     // URLs
-    static let urlStocks: String                        = "http://phisix-api3.appspot.com/stocks.json"
-    static let urlStocksBySymbol: String                = "http://phisix-api3.appspot.com/stocks/<symbol>.json"
+    static let urlStocks: String                        = "https://phisix-api3.appspot.com/stocks.json"
+    static let urlStocksBySymbol: String                = "https://phisix-api3.appspot.com/stocks/<symbol>.json"
     static let urlSymbolPlaceholder: String             = "<symbol>"
     static let urlOfflineData: String                   = "stocks.json"
     // UserDefault key
@@ -24,10 +24,13 @@ struct Constant {
 }
 
 class StocksController: UICollectionViewController {
+    var deleteCount: Int = 0
+    var lastDeletedIndex: Int = 0
+    
     // MARK: - Properties
     var stocksData = [StockViewModel]() {
         didSet {
-            self.collectionView.reloadData()
+             //self.collectionView.reloadData()
         }
     }
     
@@ -48,12 +51,13 @@ class StocksController: UICollectionViewController {
         setupStocksCollectionView()
         setupSearchResultTableView()
         setupFloatingButton()
-        //UserDefaults.standard.setValue(["JFC","NOW","ALI","MBT","PCOR","SMC","URC"], forKey: "stockNames")
+
         fetchStocks(isFilteredByUserDefaults: true) {
             (result) in
             DispatchQueue.main.async {
                 if let stockVMData = result {
                     self.stocksData = stockVMData
+                    self.collectionView.reloadData()
                 }
             }
         }
@@ -81,7 +85,7 @@ extension StocksController {
         
         // Custom controls/views registration
         collectionView.register(StocksHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: StocksHeaderView.self))
-        collectionView.register(StocksCellView.self, forCellWithReuseIdentifier: String(describing: StocksCellView.self))
+        collectionView.register(StocksCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: StocksCollectionViewCell.self))
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -91,6 +95,10 @@ extension StocksController {
         fetchStocks(isFilteredByUserDefaults: toggle) { (result) in
             if let stockVMData = result {
                 self.stocksData = stockVMData
+                self.collectionView.reloadData()
+                
+                self.deleteCount = 0
+                self.lastDeletedIndex = 0
             }
         }
     }
@@ -105,25 +113,86 @@ extension StocksController {
         return headerSearchBar
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // TODO: present a modal to show the stock details view/sheet
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return stocksData.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: StocksCellView.self), for: indexPath) as! StocksCellView
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: StocksCollectionViewCell.self), for: indexPath) as! StocksCollectionViewCell
         
-        cell.stockData = self.stocksData[indexPath.row]
+        DispatchQueue.global().async {
+            DispatchQueue.main.async {
+                cell.activityIndicator.stopAnimating()
+                cell.stockData = self.stocksData[indexPath.row]
+                cell.unwatchButton.tag = indexPath.row
+                cell.unwatchButton.addTarget(self, action: #selector(self.didTapUnwatchButton(_:)), for: .touchUpInside)
+            }
+        }
         
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        cell.alpha = 0
-        cell.layer.transform = CATransform3DTranslate(CATransform3DIdentity, 0, 20, 0)
+        let stockCell = cell as! StocksCollectionViewCell
         
+        stockCell.activityIndicator.startAnimating()
+        stockCell.alpha = 0
+        stockCell.layer.transform = CATransform3DTranslate(CATransform3DIdentity, 0, 20, 0)
         UIView.animate(withDuration: 0.7, delay: 0.2, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-            cell.alpha = 1
-            cell.layer.transform = CATransform3DIdentity
+            stockCell.alpha = 1
+            stockCell.layer.transform = CATransform3DIdentity
+        })
+    }
+    
+    // MARK: - Selector
+    @objc
+    func didTapUnwatchButton(_ sender: UIButton) {
+        var currentDeleteIndex = sender.tag
+        var currentSymbol = ""
+        
+        
+        if deleteCount > 0, currentDeleteIndex < lastDeletedIndex {
+            deleteCount = (deleteCount + 1)
+        } else if deleteCount > 0, lastDeletedIndex < currentDeleteIndex {
+            currentDeleteIndex = (currentDeleteIndex - deleteCount)
+            if currentDeleteIndex < 0 {
+                currentDeleteIndex = 0
+            }
+            deleteCount = (deleteCount - 1)
+        }
+        else if currentDeleteIndex < (stocksData.count - 1) {
+            deleteCount = (deleteCount + 1)
+        }
+    
+        
+        
+        currentSymbol = stocksData[currentDeleteIndex].symbol
+        stocksData.remove(at: currentDeleteIndex)
+        lastDeletedIndex = currentDeleteIndex
+        
+        print("\nSymbol:    \(currentSymbol)\nLastDelete:  \(lastDeletedIndex)\nCurrentDelete:     \(currentDeleteIndex)\nDeleteCount:  \(deleteCount)")
+        
+        UserDefaultsHelper.shared.updateWatchedSymbolsInUserDefaults(stockSymbol: currentSymbol, type: .remove)
+        
+        sender.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseOut, animations: {
+            sender.transform = .identity
+            sender.setTitle("Removed", for: .normal)
+            sender.layoutSubviews()
+            
+        }, completion: {
+            (success) in
+            if success {
+                
+                DispatchQueue.main.async {
+                    let indexPath = IndexPath(row: currentDeleteIndex, section: 0)
+                    self.collectionView.deleteItems(at: [indexPath])
+                }
+            }
         })
     }
 }

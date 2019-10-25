@@ -8,12 +8,6 @@
 
 import UIKit
 
-enum Severity: String {
-    case debug      = "Debug"
-    case error      = "Error"
-    case warning    = "Warning"
-}
-
 protocol LogHelperDelegate {
     // create an instance of LogHelper<T>()
     // then, use this instance in Log() function
@@ -21,7 +15,8 @@ protocol LogHelperDelegate {
 }
 
 class LogHelper<T> {
-    func createLog(_ message: String, _ severity: Severity? = .debug, _ controller: StocksController? = nil) {
+
+    func createLog(_ message: String, _ severity: Severity? = .debug) {
         print("\n\n --> \(severity!.rawValue) created by: \(String(describing: T.self))\n\nSummary: \(message)\n\n^--END\n")
     }
 }

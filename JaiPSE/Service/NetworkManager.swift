@@ -8,36 +8,21 @@
 
 import Foundation
 
-enum NetworkErrors: String, Error {
-    case clientServerErrorResponse = "Client/Server Error."
-    case invalidData = "Invalid data."
-    case invalidURL = "Invalid URL."
-    case general = "Something went wrong."
-    case parseData = "Error parsing the data."
-    case noConnection = "No Internet Connection"
-    case noResponse = "No Response."
-}
-
-enum FileErrors: String, Error {
-    case fileNotFound = "Resource file cannot be found."
-    case invalidData = "Invalid data."
-    case parseData = "Error parsing the data."
-}
-
 class NetworkManager {
-    // Singleton
+    // MARK: - Properties
     static let shared = NetworkManager()
-    
     private var logManager = LogHelper<NetworkManager>()
     
+    // MARK: - Init
     // make sure for implementors not able to recreate an instance
     init() {}
     
+    // MARK: - Functions
     /// Fetch a generic JSON format Data from the url string provided.
-    func fetchOnline<T:Decodable>(of type: T.Type = T.self, from urlString: String, completion: @escaping(Result<T, NetworkErrors>) -> Void) {
+    internal func fetchOnline<T:Decodable>(of type: T.Type = T.self, from urlString: String, completion: @escaping(Result<T, NetworkErrors>) -> Void) {
         
         guard let url = URL(string: urlString) else {
-            logManager.createLog("\(NetworkErrors.invalidURL.rawValue)\nURL: \(urlString)")
+            Log("\(NetworkErrors.invalidURL.rawValue)\nURL: \(urlString)", .error)
             completion(.failure(NetworkErrors.invalidURL))
             return
         }
@@ -55,13 +40,13 @@ class NetworkManager {
                     errorType = .general
                 }
                 
-                self.logManager.createLog("\(errorType.rawValue)\n\n\(error)")
+                self.Log("\(errorType.rawValue)\n\n\(error)", .error)
                 completion(.failure(errorType))
                 return
             }
             
             guard let response = response as? HTTPURLResponse else {
-                self.logManager.createLog("\(NetworkErrors.noResponse.rawValue)\n\n\(String(describing: error))")
+                self.Log("\(NetworkErrors.noResponse.rawValue)\n\n\(String(describing: error))", .error)
                 completion(.failure(NetworkErrors.noResponse))
                 return
             }
@@ -74,26 +59,26 @@ class NetworkManager {
                         completion(.success(jsonData))
                         
                     } catch let parseError {
-                        self.logManager.createLog("\(NetworkErrors.parseData.rawValue)\n\(parseError)")
+                        self.Log("\(NetworkErrors.parseData.rawValue)\n\(parseError)", .error)
                         completion(.failure(NetworkErrors.parseData))
                     }
                 } else {
-                    self.logManager.createLog("\(NetworkErrors.invalidData.rawValue)")
+                    self.Log("\(NetworkErrors.invalidData.rawValue)", .error)
                     completion(.failure(NetworkErrors.invalidData))
                 }
             } else {
-                self.logManager.createLog("\(NetworkErrors.clientServerErrorResponse.rawValue)\nStatus Code: \(response.statusCode). URL: \(urlString)")
+                self.Log("\(NetworkErrors.clientServerErrorResponse.rawValue)\nStatus Code: \(response.statusCode). URL: \(urlString)", .error)
                 completion(.failure(NetworkErrors.clientServerErrorResponse))
             }
         }.resume()
     }
     
     /// Fetch generic JSON format data from source file.
-    func fetchFromFile<T:Decodable>(of type: T.Type = T.self, fromFile file: String, completion: @escaping(Result<T, FileErrors>) -> Void) {
+    internal func fetchFromFile<T:Decodable>(of type: T.Type = T.self, fromFile file: String, completion: @escaping(Result<T, FileErrors>) -> Void) {
         
         // convert bundle file path to URL string
         guard let bundledFile = Bundle.main.url(forResource: file, withExtension: nil) else {
-            logManager.createLog("\(FileErrors.fileNotFound.rawValue)\nFile: \(file)")
+            Log("\(FileErrors.fileNotFound.rawValue)\nFile: \(file)", .error)
             completion(.failure(FileErrors.fileNotFound))
             return
         }
@@ -108,13 +93,20 @@ class NetworkManager {
                 completion(.success(jsonData))
                 
             } catch let parseError {
-                self.logManager.createLog("\(FileErrors.parseData.rawValue)\n\(parseError)")
+                self.Log("\(FileErrors.parseData.rawValue)\n\(parseError)", .error)
                 completion(.failure(FileErrors.parseData))
             }
             
         } catch let dataError {
-            self.logManager.createLog("\(FileErrors.invalidData.rawValue)\n\(dataError)")
+            self.Log("\(FileErrors.invalidData.rawValue)\n\(dataError)", .error)
             completion(.failure(FileErrors.invalidData))
         }
+    }
+}
+
+// MARK: - Extensions
+extension NetworkManager: LogHelperDelegate {
+    internal func Log(_ logMessage: String, _ severity: Severity?) {
+        logManager.createLog(logMessage)
     }
 }

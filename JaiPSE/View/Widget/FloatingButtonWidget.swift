@@ -33,12 +33,12 @@ class FloatingButtonWidget: UIButton {
     
     // MARK: - Lifecycle
     private func setupButtonView() {
-        guard let img = UIImage(systemName: "plus.circle.fill") else { return }
-        setBackgroundImage(img, for: .normal)
-        
         tintColor = #colorLiteral(red: 0.9027048945, green: 0.1456339359, blue: 0.1390642822, alpha: 1)
         backgroundColor = .white
         layer.cornerRadius = 25
+        
+        guard let img = UIImage(systemName: "plus.circle.fill") else { return }
+        setBackgroundImage(img, for: .normal)
         addTarget(self, action: #selector(tapAction), for: .touchUpInside)
         
         toggleAnimation()
@@ -47,7 +47,7 @@ class FloatingButtonWidget: UIButton {
     // MARK: - Selectors
     @objc
     func tapAction() {
-        toggleFloatingButton = !toggleFloatingButton
+        toggleFloatingButton.toggle()
         toggleAnimation()
         delegate?.floatingButtonTapped()
     }

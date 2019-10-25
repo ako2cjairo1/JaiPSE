@@ -14,7 +14,6 @@ protocol SearchButtonDelegate {
     func searchButtonTapped()
     /// A delegate function of SearchWidget (custom class) that responds to when the "Search" key was tapped.
     func searchBarTapped(searchKeyword: String?)
-    
     /// A delegate function of SearchWidget (custom class) that responds to when a user change search value.
     func searchBarTextDidChange(_ searchBar: UISearchBar, searchKeyword: String)
 }
@@ -22,6 +21,7 @@ protocol SearchButtonDelegate {
 class SearchWidget: UIView {
     
     // MARK: - Properties
+    var delegate: SearchButtonDelegate?
     var isSearchMode: Bool = true {
         didSet {
     
@@ -59,64 +59,51 @@ class SearchWidget: UIView {
             
         }
     }
-    var delegate: SearchButtonDelegate?
     
     private lazy var titleStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [dateLabel, titleLabel])
-        stack.distribution = .fill
         
+        stack.distribution = .fill
         return stack
     }()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
+        
         label.text = "Stocks"
         label.textColor = .darkText
-        
-//        label.layer.borderColor = UIColor.red.cgColor
-//        label.layer.borderWidth = 0.5
-        
         return label
     }()
     
     private let dateLabel: UILabel = {
         let label = UILabel()
+        
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM dd"
         
         label.text = formatter.string(from: Date())
         label.textAlignment = .right
         label.textColor = .darkGray
-        
-//        label.layer.borderColor = UIColor.red.cgColor
-//        label.layer.borderWidth = 0.5
-        
         return label
     }()
     
     private let searchButton: UIButton = {
         let button = UIButton()
+        
         button.addTarget(self, action: #selector(searchStock), for: .touchUpInside)
         button.tintColor = .darkGray
-        
-//        button.layer.borderColor = UIColor.red.cgColor
-//        button.layer.borderWidth = 0.5
-        
         return button
     }()
     
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
+        
         searchBar.searchBarStyle = .minimal
         searchBar.searchTextField.layer.borderColor = UIColor.orange.cgColor
         searchBar.searchTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 20)
         searchBar.tintColor = .darkGray
         searchBar.placeholder = "Company name or Stock Code"
         searchBar.delegate = self
-        
-//        searchBar.layer.borderColor = UIColor.red.cgColor
-//        searchBar.layer.borderWidth = 0.5
-        
         return searchBar
     }()
     
@@ -183,11 +170,6 @@ class SearchWidget: UIView {
                         },
                        completion: { (success) in
                             if success {
-                                /*if self.isSearchMode {
-                                    self.titleStack.alignment = .bottom
-                                } else {
-                                    self.titleStack.alignment = .top
-                                }*/
                                 UIView.animate(withDuration: 0.3, animations: {
                                     self.searchButton.transform = .identity
                                     self.searchButton.layer.shadowOpacity = 0.4
@@ -207,7 +189,7 @@ class SearchWidget: UIView {
     }
     
     func toggleSearchBar() {
-        isSearchMode = !isSearchMode
+        isSearchMode.toggle()
         animate()
     }
 }
@@ -219,7 +201,6 @@ extension SearchWidget: UISearchBarDelegate {
         if let delegate = delegate {
             delegate.searchBarTapped(searchKeyword: searchBar.text)
         }
-        
         // hides the keyboard when "Search" key was clicked.
         searchBar.resignFirstResponder()
     }

@@ -8,11 +8,6 @@
 
 import Foundation
 
-enum FetchMode {
-    case fileResource
-    case online
-}
-
 extension StocksController {
     
     internal func fetchStocks(mode: FetchMode? = .online, isFilteredByUserDefaults: Bool? = true, searchKeyword: String? = "", completion: @escaping([StockViewModel]?) -> Void) {

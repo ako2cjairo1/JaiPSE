@@ -10,8 +10,10 @@ import Foundation
 import UIKit
 
 class ResultController {
-    static let shared = ResultController()
     
+    // MARK: - Properties
+    // Singleton instance
+    static let shared = ResultController()
     var stockVMData = [StockViewModel]()
     var view = UIView()
     let mode: FetchMode?
@@ -54,16 +56,11 @@ class ResultController {
         }
         
         // additional filter applied to array like: (1)UserDefault values and/or (2) search keyword
-        stockVMData = additionalFilter(model: stockVMData)
-        
-        return stockVMData
+        return additionalFilter()
     }
     
     /// additional filter applied to array like: (1)UserDefault values and/or (2) search keyword
-    fileprivate func additionalFilter(model: [StockViewModel]) -> [StockViewModel] {
-        
-        var stockVMData = model
-        
+    fileprivate func additionalFilter() -> [StockViewModel] {
         // filter StockViewModel data using stocks added by user (stored in UserDefaults)
         if let userFilter = isFilteredByUserDefaults, userFilter  {
             if let stockCodesFromUserDefaults = UserDefaults.standard.array(forKey: Constant.userDefaultsForKeyStockNames) as? [String] {

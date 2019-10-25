@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D534A5D823615983002F1BD3 /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534A5D723615983002F1BD3 /* UserDefaultsHelper.swift */; };
+		D534A5DB23616F8F002F1BD3 /* NetworkManagerEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534A5DA23616F8F002F1BD3 /* NetworkManagerEnums.swift */; };
+		D534A5DD23617067002F1BD3 /* LogHelperEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534A5DC23617067002F1BD3 /* LogHelperEnums.swift */; };
 		D534E89B234F361400BACEDC /* FloatingButtonWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E89A234F361400BACEDC /* FloatingButtonWidget.swift */; };
 		D534E8A0235066D500BACEDC /* StockAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E89F235066D500BACEDC /* StockAPIModel.swift */; };
 		D534E8AD2351FA0F00BACEDC /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8AB2351FA0F00BACEDC /* SearchResultCell.swift */; };
@@ -31,10 +34,13 @@
 		D5CA2903234C496200596188 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA2901234C496200596188 /* UIViewExtension.swift */; };
 		D5CA2905234C6B2400596188 /* SearchWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CA2904234C6B2400596188 /* SearchWidget.swift */; };
 		D5EC453B234DCD9800485D51 /* StocksHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC453A234DCD9800485D51 /* StocksHeaderView.swift */; };
-		D5EC453E234DDDE100485D51 /* StocksCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC453D234DDDE100485D51 /* StocksCellView.swift */; };
+		D5EC453E234DDDE100485D51 /* StocksCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EC453D234DDDE100485D51 /* StocksCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D534A5D723615983002F1BD3 /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
+		D534A5DA23616F8F002F1BD3 /* NetworkManagerEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerEnums.swift; sourceTree = "<group>"; };
+		D534A5DC23617067002F1BD3 /* LogHelperEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogHelperEnums.swift; sourceTree = "<group>"; };
 		D534E89A234F361400BACEDC /* FloatingButtonWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButtonWidget.swift; sourceTree = "<group>"; };
 		D534E89F235066D500BACEDC /* StockAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockAPIModel.swift; sourceTree = "<group>"; };
 		D534E8AB2351FA0F00BACEDC /* SearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
@@ -61,7 +67,7 @@
 		D5CA2901234C496200596188 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		D5CA2904234C6B2400596188 /* SearchWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWidget.swift; sourceTree = "<group>"; };
 		D5EC453A234DCD9800485D51 /* StocksHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksHeaderView.swift; sourceTree = "<group>"; };
-		D5EC453D234DDDE100485D51 /* StocksCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksCellView.swift; sourceTree = "<group>"; };
+		D5EC453D234DDDE100485D51 /* StocksCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,9 +81,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D534A5D923616F59002F1BD3 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				D534A5DC23617067002F1BD3 /* LogHelperEnums.swift */,
+				D534A5DA23616F8F002F1BD3 /* NetworkManagerEnums.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
 		D534E89E2350669D00BACEDC /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D534A5D923616F59002F1BD3 /* Enum */,
 				D534E8B42354341F00BACEDC /* Data */,
 				D534E89F235066D500BACEDC /* StockAPIModel.swift */,
 				D534E8B0235423C600BACEDC /* StockViewModel.swift */,
@@ -107,6 +123,7 @@
 			children = (
 				D5C91E802358761000B4EB40 /* LogHelper.swift */,
 				D534E8B62354345E00BACEDC /* NetworkManager.swift */,
+				D534A5D723615983002F1BD3 /* UserDefaultsHelper.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -171,7 +188,7 @@
 				D5CA28FB234C48CA00596188 /* Extension */,
 				D534E8A5235099F700BACEDC /* SearchResult */,
 				D5EC453C234DDC0A00485D51 /* Widget */,
-				D5EC453D234DDDE100485D51 /* StocksCellView.swift */,
+				D5EC453D234DDDE100485D51 /* StocksCollectionViewCell.swift */,
 				D5EC453A234DCD9800485D51 /* StocksHeaderView.swift */,
 			);
 			path = View;
@@ -269,15 +286,18 @@
 			files = (
 				D534E8B72354345E00BACEDC /* NetworkManager.swift in Sources */,
 				D597E92E235C5D4B00C01882 /* FetchDataController.swift in Sources */,
+				D534A5DD23617067002F1BD3 /* LogHelperEnums.swift in Sources */,
 				D5CA2903234C496200596188 /* UIViewExtension.swift in Sources */,
 				D534E8A0235066D500BACEDC /* StockAPIModel.swift in Sources */,
 				D597E930235D853100C01882 /* ResultController.swift in Sources */,
 				D534E8B1235423C600BACEDC /* StockViewModel.swift in Sources */,
 				D597E92C235B505E00C01882 /* SearchResultTableViewController.swift in Sources */,
-				D5EC453E234DDDE100485D51 /* StocksCellView.swift in Sources */,
+				D5EC453E234DDDE100485D51 /* StocksCollectionViewCell.swift in Sources */,
 				D5CA28DB234C2AD700596188 /* AppDelegate.swift in Sources */,
 				D597E928235B4AC500C01882 /* SearchWidgetController.swift in Sources */,
+				D534A5D823615983002F1BD3 /* UserDefaultsHelper.swift in Sources */,
 				D5BAADC52355E118002BC340 /* ToastMessageWidget.swift in Sources */,
+				D534A5DB23616F8F002F1BD3 /* NetworkManagerEnums.swift in Sources */,
 				D534E89B234F361400BACEDC /* FloatingButtonWidget.swift in Sources */,
 				D5C91E812358761000B4EB40 /* LogHelper.swift in Sources */,
 				D597E92A235B4C7F00C01882 /* FloatingButtonWidgetController.swift in Sources */,

@@ -37,28 +37,27 @@ class SearchResultTableView: UIView {
     
     lazy var searchResultTableView: UITableView = {
         let tv = UITableView()
+        
         tv.rowHeight = 65
         tv.layer.cornerRadius = 25
         tv.backgroundColor = .darkGray
         tv.separatorStyle = .none
-
         return tv
     }()
     
     lazy var numberOfResult: UILabel = {
         let label = UILabel()
+        
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 14)
         label.text = nil
         label.textColor = .white
         label.backgroundColor = .darkGray
-        
         label.layer.cornerRadius = 20
         label.layer.shadowOpacity = 0.3
         label.layer.shadowOffset = CGSize(width: 0, height: 15)
         label.layer.shadowRadius = 10
         label.alpha = 0
-        
         return label
     }()
     
@@ -108,7 +107,18 @@ extension SearchResultTableView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SearchResultCell.self), for: indexPath) as! SearchResultCell
-        cell.stockData = searchResultData[indexPath.row]
+        let stockDataViewModel = searchResultData[indexPath.row]
+        
+        cell.stockData = stockDataViewModel
+        cell.addButton.tag = indexPath.row
+        cell.addButton.addTarget(self, action: #selector(didTapAddButton(_:)), for: .touchUpInside)
+        
+        let isAddedToWatch = UserDefaultsHelper.shared.isSymbolExists(stockDataViewModel.symbol)
+        // change the button image wheather symbol is already added to watlist or not.
+        let img = UIImage(systemName: isAddedToWatch ? "checkmark.circle.fill" : "plus.circle.fill")
+        cell.addButton.setBackgroundImage(img, for: .normal)
+        cell.addButton.tintColor = isAddedToWatch ? #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1) : #colorLiteral(red: 0.1946504414, green: 0.7753459811, blue: 0.3262496591, alpha: 1)
+        cell.addButton.isUserInteractionEnabled = !isAddedToWatch
         
         return cell
     }
@@ -143,6 +153,42 @@ extension SearchResultTableView: UITableViewDelegate {
         UIView.animate(withDuration: 0.7, delay: 0.2, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
             cell.alpha = 1
             cell.layer.transform = CATransform3DIdentity
+        })
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    // MARK: - Selector
+    @objc
+    func didTapAddButton(_ sender: UIButton) {
+        // prevent user to tap the Add button again
+        sender.isUserInteractionEnabled = false
+        
+        let selectedSymbol = searchResultData[sender.tag].symbol
+        // update the list of watch list in UserDefaults
+        UserDefaultsHelper.shared.updateWatchedSymbolsInUserDefaults(stockSymbol: selectedSymbol)
+        
+        sender.transform = .identity
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            
+            sender.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+            sender.layoutIfNeeded()
+            
+            // change the button image of to "Check" after adding to watchlist.
+            let img = UIImage(systemName: "checkmark.circle.fill")
+            sender.setBackgroundImage(img, for: .normal)
+            sender.tintColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
+            
+        }, completion: {
+            (success) in
+            if success {
+                
+                UIView.animate(withDuration: 0.3) {
+                    sender.transform = .identity
+                }
+            }
         })
     }
 }
