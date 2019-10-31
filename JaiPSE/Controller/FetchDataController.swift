@@ -31,9 +31,7 @@ extension StocksController {
                 NetworkManager.shared.fetchFromFile(of: StockAPIModel.self, fromFile: Constant.urlOfflineData) {
                     (result) in
                     DispatchQueue.main.async {
-                        DispatchQueue.main.async {
-                            completion(controller.process(result))
-                        }
+                        completion(controller.process(result))
                     }
                 }
                 break

@@ -23,8 +23,17 @@ class UserDefaultsHelper {
     fileprivate init() {}
     
     // MARK: - Functions
+    internal func getWatchedSymbols() -> [String]? {
+        if let watchedSymbolsArray = UserDefaults.standard.array(forKey: Constant.userDefaultsForKeyStockNames) as? [String], watchedSymbolsArray.count > 0 {
+            return watchedSymbolsArray
+        } else {
+            Log("There are no symbols in the watchlist right now...")
+            return nil
+        }
+    }
+    
     /// Append/create a stock symbols array (of string) in UserDefaults
-    internal func updateWatchedSymbolsInUserDefaults(stockSymbol: String, type: UserDefaultUpdateType? = .append) {
+    internal func updateWatchedSymbols(stockSymbol: String, type: UserDefaultUpdateType? = .append) {
         let key = Constant.userDefaultsForKeyStockNames
         
         if var stockCodesFromUserDefaults = UserDefaults.standard.stringArray(forKey: key) {
@@ -33,18 +42,18 @@ class UserDefaultsHelper {
             
             switch type {
                 case .append:
-                    if !isSymbolExists(stockSymbol) {
+                    if !isSymbolInWatchedList(stockSymbol) {
                         // append the stock symbol to the watchlist (string array) if not existed yet.
                         stockCodesFromUserDefaults.append(stockSymbol)
-                        Log("'\(stockSymbol)' was ADDED to watch list...", .debug)
+                        Log("'\(stockSymbol)' was ADDED to watch list...")
                     }
                     break
                     
                 case .remove:
-                    if isSymbolExists(stockSymbol) {
+                    if isSymbolInWatchedList(stockSymbol) {
                         // remove the stock symbol from the watch list (string array)
                         stockCodesFromUserDefaults.removeAll(where: { return $0.lowercased() == stockSymbol.lowercased() })
-                        Log("'\(stockSymbol)' was REMOVED to watch list...", .debug)
+                        Log("'\(stockSymbol)' was REMOVED to watch list...")
                     }
                     break
                 
@@ -57,12 +66,11 @@ class UserDefaultsHelper {
                 UserDefaults.standard.setValue(stockCodesFromUserDefaults, forKey: key)
             }
             
-            
         } else {
             switch type {
                 case .append:
                     // create new user default value if nothing existed
-                    addStockSymbolFoKey(value: [stockSymbol], key)
+                    addWatchedSymbolFoKey(value: [stockSymbol], key)
                     break
                     
                 case .remove:
@@ -74,23 +82,26 @@ class UserDefaultsHelper {
     }
     
     /// Removes the stock symbol values in UserDefaults using a key
-    internal func removeStockSymbolForKey(_ key: String) {
+    internal func removeWatchedSymbolForKey(_ key: String) {
         UserDefaults.standard.removeObject(forKey: key)
-        Log("UserDefault with key \(key) was removed...", .debug)
+        Log("UserDefault with key \(key) was removed...")
     }
     
     /// Set new value for stock symbols in UserDefaults
-    internal func addStockSymbolFoKey(value: [String], _ key: String) {
+    internal func addWatchedSymbolFoKey(value: [String], _ key: String) {
         UserDefaults.standard.set(value, forKey: key)
-        Log("Created new watch list UserDefault with key: \(key) ", .debug)
+        Log("Created new watch list UserDefault with key: \(key) ")
     }
     
     /// Checks if the symbol is existing in the array of stock symbols.
-    internal func isSymbolExists(_ symbol: String, _ stringArray: [String]? = UserDefaults.standard.stringArray(forKey: Constant.userDefaultsForKeyStockNames)) -> Bool {
+    internal func isSymbolInWatchedList(_ symbol: String, _ stringArray: [String]? = UserDefaultsHelper.shared.getWatchedSymbols()) -> Bool {
         
-        if stringArray!.contains(where: { return $0.lowercased() == symbol.lowercased() }) {
-            return true
+        if let array = stringArray {
+            if array.contains(where: { return $0.lowercased() == symbol.lowercased() }) {
+                return true
+            }
         }
+        
         return false
     }
 }
@@ -98,7 +109,7 @@ class UserDefaultsHelper {
 // MARK: - Extensions
 extension UserDefaultsHelper: LogHelperDelegate {
     
-    internal func Log(_ logMessage: String, _ severity: Severity?) {
-        logManager.createLog(logMessage)
+    internal func Log(_ logMessage: String, _ severity: Severity? = .debug) {
+        logManager.createLog(logMessage, severity)
     }
 }

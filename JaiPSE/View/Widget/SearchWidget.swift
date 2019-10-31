@@ -75,7 +75,7 @@ class SearchWidget: UIView {
         return label
     }()
     
-    private let dateLabel: UILabel = {
+    let dateLabel: UILabel = {
         let label = UILabel()
         
         let formatter = DateFormatter()
@@ -110,13 +110,11 @@ class SearchWidget: UIView {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         superView()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
         superView()
     }
     
@@ -134,12 +132,6 @@ class SearchWidget: UIView {
         backgroundColor = .searchContainerBgColor
         layer.cornerRadius = 25
         layer.masksToBounds = true
-        
-        // shadow
-        layer.shadowColor = UIColor.white.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 3)
-        layer.shadowOpacity = 0.5
-        layer.shadowRadius = 10
         
         addSubview(titleStack)
         addSubview(searchButton)
@@ -160,30 +152,25 @@ class SearchWidget: UIView {
         searchButton.transform = CGAffineTransform(rotationAngle: 180)
         searchButton.layer.shadowOpacity = 0
         
-        UIView.animate(withDuration: 0.8, delay: 0,
-                       usingSpringWithDamping: 0.5,
-                       initialSpringVelocity: 1,
-                       options: .curveEaseIn,
-                       animations: {
+        UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                             self.searchButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                             self.layoutIfNeeded()
+                        
                         },
                        completion: { (success) in
-                            if success {
-                                UIView.animate(withDuration: 0.3, animations: {
-                                    self.searchButton.transform = .identity
-                                    self.searchButton.layer.shadowOpacity = 0.4
-                                    self.searchButton.layer.shadowOffset = CGSize(width: 0, height: 3)
-                                    self.searchButton.layer.shadowRadius = 2
-                                    self.layoutIfNeeded()
-                                })
-                                
-                                // hide/show the keyboard
-                                if self.isSearchMode {
-                                    self.searchBar.becomeFirstResponder()
-                                } else {
-                                    self.searchBar.resignFirstResponder()
-                                }
+                            UIView.animate(withDuration: 0.3, animations: {
+                                self.searchButton.transform = .identity
+                                self.searchButton.layer.shadowOpacity = 0.4
+                                self.searchButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+                                self.searchButton.layer.shadowRadius = 2
+                                self.layoutIfNeeded()
+                            })
+                            
+                            // hide/show the keyboard
+                            if self.isSearchMode {
+                                self.searchBar.becomeFirstResponder()
+                            } else {
+                                self.searchBar.resignFirstResponder()
                             }
                         })
     }

@@ -13,16 +13,20 @@ import UIKit
 extension StocksController: SearchButtonDelegate {
     
     func searchBarTextDidChange(_ searchBar: UISearchBar, searchKeyword: String) {
-        if !searchKeyword.isEmpty, searchKeyword.count > 2 {
+        if !searchKeyword.isEmpty, !searchKeyword.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty /*, searchKeyword.count > 2*/ {
             let filterUserDefaults = floatingButton.toggleFloatingButton ? false : true
             
             fetchStocks(isFilteredByUserDefaults: filterUserDefaults, searchKeyword: searchKeyword) {
                 (result) in
-                if let stockVMData = result {
-                    if self.floatingButton.toggleFloatingButton {
-                        self.searchResultTableView.searchResultData = stockVMData
-                    } else {
-                        self.stocksData = stockVMData
+                DispatchQueue.main.async {
+                    if let stockVMData = result {
+                        // TODO: (1) prevent reloading of collection view and (2) animate adding of cells
+                        if self.floatingButton.toggleFloatingButton {
+                            self.searchResultTableView.searchResultData = stockVMData
+                        } else {
+                            self.isUnwatchMode = true
+                            self.stocksData = stockVMData
+                        }
                     }
                 }
                 
@@ -31,6 +35,7 @@ extension StocksController: SearchButtonDelegate {
             if self.floatingButton.toggleFloatingButton {
                 self.searchResultTableView.searchResultData = [StockViewModel]()
             } else {
+                self.isUnwatchMode = false
                 reloadStocks()
             }
         }
@@ -52,6 +57,7 @@ extension StocksController: SearchButtonDelegate {
     
     func searchBarTapped(searchKeyword: String?) {
         if let searchKeyword = searchKeyword {
+            self.isUnwatchMode = false
             let filterUserDefaults = floatingButton.toggleFloatingButton ? false : true
             
             fetchStocks(isFilteredByUserDefaults: filterUserDefaults, searchKeyword: searchKeyword) {

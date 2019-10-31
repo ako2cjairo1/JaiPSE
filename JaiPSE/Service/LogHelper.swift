@@ -9,8 +9,8 @@
 import UIKit
 
 protocol LogHelperDelegate {
-    // create an instance of LogHelper<T>()
-    // then, use this instance in Log() function
+    /// create an instance of LogHelper<T>()
+    /// then, use this instance in Log() function
     func Log(_ logMessage: String, _ severity: Severity?)
 }
 

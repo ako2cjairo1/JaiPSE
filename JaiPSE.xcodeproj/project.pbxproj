@@ -17,7 +17,7 @@
 		D534E8B1235423C600BACEDC /* StockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8B0235423C600BACEDC /* StockViewModel.swift */; };
 		D534E8B72354345E00BACEDC /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D534E8B62354345E00BACEDC /* NetworkManager.swift */; };
 		D5613B6323573F1D003E35EE /* stocks.json in Resources */ = {isa = PBXBuildFile; fileRef = D5613B6223573F1D003E35EE /* stocks.json */; };
-		D597E926235B49D000C01882 /* LogHelperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E925235B49D000C01882 /* LogHelperController.swift */; };
+		D585C05F2366C3B6007594B5 /* StocksDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D585C05E2366C3B6007594B5 /* StocksDetailView.swift */; };
 		D597E928235B4AC500C01882 /* SearchWidgetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E927235B4AC500C01882 /* SearchWidgetController.swift */; };
 		D597E92A235B4C7F00C01882 /* FloatingButtonWidgetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E929235B4C7F00C01882 /* FloatingButtonWidgetController.swift */; };
 		D597E92C235B505E00C01882 /* SearchResultTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D597E92B235B505E00C01882 /* SearchResultTableViewController.swift */; };
@@ -48,7 +48,7 @@
 		D534E8B0235423C600BACEDC /* StockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockViewModel.swift; sourceTree = "<group>"; };
 		D534E8B62354345E00BACEDC /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		D5613B6223573F1D003E35EE /* stocks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stocks.json; sourceTree = "<group>"; };
-		D597E925235B49D000C01882 /* LogHelperController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogHelperController.swift; sourceTree = "<group>"; };
+		D585C05E2366C3B6007594B5 /* StocksDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StocksDetailView.swift; sourceTree = "<group>"; };
 		D597E927235B4AC500C01882 /* SearchWidgetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWidgetController.swift; sourceTree = "<group>"; };
 		D597E929235B4C7F00C01882 /* FloatingButtonWidgetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButtonWidgetController.swift; sourceTree = "<group>"; };
 		D597E92B235B505E00C01882 /* SearchResultTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewController.swift; sourceTree = "<group>"; };
@@ -133,7 +133,6 @@
 			children = (
 				D5CA28F0234C2C6A00596188 /* StocksController.swift */,
 				D597E927235B4AC500C01882 /* SearchWidgetController.swift */,
-				D597E925235B49D000C01882 /* LogHelperController.swift */,
 				D597E929235B4C7F00C01882 /* FloatingButtonWidgetController.swift */,
 				D597E92B235B505E00C01882 /* SearchResultTableViewController.swift */,
 			);
@@ -189,6 +188,7 @@
 				D534E8A5235099F700BACEDC /* SearchResult */,
 				D5EC453C234DDC0A00485D51 /* Widget */,
 				D5EC453D234DDDE100485D51 /* StocksCollectionViewCell.swift */,
+				D585C05E2366C3B6007594B5 /* StocksDetailView.swift */,
 				D5EC453A234DCD9800485D51 /* StocksHeaderView.swift */,
 			);
 			path = View;
@@ -298,6 +298,7 @@
 				D534A5D823615983002F1BD3 /* UserDefaultsHelper.swift in Sources */,
 				D5BAADC52355E118002BC340 /* ToastMessageWidget.swift in Sources */,
 				D534A5DB23616F8F002F1BD3 /* NetworkManagerEnums.swift in Sources */,
+				D585C05F2366C3B6007594B5 /* StocksDetailView.swift in Sources */,
 				D534E89B234F361400BACEDC /* FloatingButtonWidget.swift in Sources */,
 				D5C91E812358761000B4EB40 /* LogHelper.swift in Sources */,
 				D597E92A235B4C7F00C01882 /* FloatingButtonWidgetController.swift in Sources */,
@@ -305,7 +306,6 @@
 				D534E8AF2351FB5B00BACEDC /* SearchResultTableView.swift in Sources */,
 				D5CA28F1234C2C6A00596188 /* StocksController.swift in Sources */,
 				D5CA28DD234C2AD700596188 /* SceneDelegate.swift in Sources */,
-				D597E926235B49D000C01882 /* LogHelperController.swift in Sources */,
 				D5CA2905234C6B2400596188 /* SearchWidget.swift in Sources */,
 				D534E8AD2351FA0F00BACEDC /* SearchResultCell.swift in Sources */,
 				D5EC453B234DCD9800485D51 /* StocksHeaderView.swift in Sources */,

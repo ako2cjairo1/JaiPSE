@@ -13,43 +13,51 @@ class StocksCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     var stockData: StockViewModel? {
         didSet {
-            if let symbol = self.stockData?.symbol {
-                self.symbolLabel.text = symbol.uppercased()
-            }
-            
-            if let name = self.stockData?.name {
-                self.nameLabel.text = name.uppercased()
-            }
-            
-            if let price = self.stockData?.price {
-                self.priceLabel.text = "\(price)"
-            }
-            
-            if let percent = self.stockData?.percentChange {
-                var formattedPercent = String(format: "%.2f", percent)
-                var tintColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+            DispatchQueue.main.async {
                 
-                if percent < 0 {
-                    tintColor = #colorLiteral(red: 0.9645465016, green: 0.2221286595, blue: 0.182257086, alpha: 1)
-                    
-                } else if percent > 0 {
-                    formattedPercent = "+\(formattedPercent)"
-                    tintColor = #colorLiteral(red: 0.2797255516, green: 0.8248286843, blue: 0.3802976012, alpha: 1)
+                self.unwatchButton.setTitle("Unwatch", for: .normal)
+                self.unwatchButton.titleLabel?.font = UIFont.systemFont(ofSize: 10)
+                self.unwatchButton.setTitleColor(.white, for: .normal)
+                self.unwatchButton.backgroundColor = .darkGray
+                
+                if let symbol = self.stockData?.symbol {
+                    self.symbolLabel.text = symbol.uppercased()
                 }
                 
-                self.percentChangeLabel.textColor = tintColor
-                self.percentChangeLabel.text = "\(formattedPercent)%"
+                if let name = self.stockData?.name {
+                    self.nameLabel.text = name.uppercased()
+                }
+                
+                if let price = self.stockData?.price {
+                    self.priceLabel.text = "\(price)"
+                }
+                
+                if let percent = self.stockData?.percentChange {
+                    var formattedPercent = String(format: "%.2f", percent)
+                    var tintColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+                    
+                    if percent < 0 {
+                        tintColor = #colorLiteral(red: 0.9645465016, green: 0.2221286595, blue: 0.182257086, alpha: 1)
+                        
+                    } else if percent > 0 {
+                        formattedPercent = "+\(formattedPercent)"
+                        tintColor = #colorLiteral(red: 0.2797255516, green: 0.8248286843, blue: 0.3802976012, alpha: 1)
+                    }
+                    
+                    self.percentChangeLabel.textColor = tintColor
+                    self.percentChangeLabel.text = "\(formattedPercent)%"
+                }
+                
+                if let volume = self.stockData?.volume {
+                    
+                    self.volumeLabel.text = "\(volume)"
+                }
+                self.activityIndicator.stopAnimating()
             }
-            
-            if let volume = self.stockData?.volume {
-                self.volumeLabel.text = "\(volume)"
-            }
-            
-            self.activityIndicator.stopAnimating()
         }
     }
     
-    lazy var activityIndicator: UIActivityIndicatorView = {
+    var activityIndicator: UIActivityIndicatorView = {
         let activityView = UIActivityIndicatorView(style: .large)
         
         activityView.hidesWhenStopped = true
@@ -79,7 +87,7 @@ class StocksCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    lazy var symbolLabel: UILabel = {
+    var symbolLabel: UILabel = {
         let label = UILabel()
         
         label.adjustsFontSizeToFitWidth = true
@@ -90,7 +98,7 @@ class StocksCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    lazy var nameLabel: UILabel = {
+    var nameLabel: UILabel = {
         let label = UILabel()
         
         label.contentMode = .top
@@ -113,7 +121,7 @@ class StocksCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    lazy var priceLabel: UILabel = {
+    var priceLabel: UILabel = {
         let label = UILabel()
         
         label.adjustsFontSizeToFitWidth = true
@@ -124,7 +132,7 @@ class StocksCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    lazy var percentChangeLabel: UILabel = {
+    var percentChangeLabel: UILabel = {
         let label = UILabel()
         
         label.adjustsFontSizeToFitWidth = true
@@ -134,7 +142,7 @@ class StocksCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    lazy var volumeLabel: UILabel = {
+    var volumeLabel: UILabel = {
         let label = UILabel()
         
         label.adjustsFontSizeToFitWidth = true
@@ -164,7 +172,7 @@ class StocksCollectionViewCell: UICollectionViewCell {
         addSubview(cellContainerView)
         cellContainerView.anchorExt(centerHorizontal: centerXAnchor,
                                     centerVertical: centerYAnchor,
-                                    width: frame.width - 16, height: 100)
+                                    width: frame.width - 16, height: 110)
         
         symbolLabel.anchorExt(top: cellContainerView.topAnchor, paddingTop: 8,
                               leading: cellContainerView.leadingAnchor, paddingLead: 8,
@@ -178,7 +186,7 @@ class StocksCollectionViewCell: UICollectionViewCell {
                                 bottom: cellContainerView.bottomAnchor, paddingBottom: 14,
                                 width: cellQuadrantWidth - 15, height: 15)
         
-        priceLabel.anchorExt(top: cellContainerView.topAnchor, paddingTop: 16,
+        priceLabel.anchorExt(top: cellContainerView.topAnchor, paddingTop: 15,
                              trailing: cellContainerView.trailingAnchor, paddingTrail: 8,
                              width: cellQuadrantWidth)
         

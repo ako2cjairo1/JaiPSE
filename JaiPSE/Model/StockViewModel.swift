@@ -7,11 +7,11 @@
 //
 
 struct StockViewModel {
-    var name: String
-    var price: Float
-    var percentChange: Float
-    var volume: Double
-    var symbol: String
+    let name: String
+    let price: Float
+    let percentChange: Float
+    let volume: Double
+    let symbol: String
     
     init(stock: Stock) {
         self.name = stock.name

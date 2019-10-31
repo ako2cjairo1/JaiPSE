@@ -14,18 +14,10 @@ class SearchResultTableView: UIView {
     var searchResultData = [StockViewModel]() {
         didSet {
             searchResultTableView.reloadData()
-            
-            numberOfResult.alpha = 0
-            numberOfResult.transform = CGAffineTransform(translationX: 0, y: -numberOfResult.frame.size.height)
-            
-            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-                self.numberOfResult.text = "\(self.searchResultData.count > 0 ? String(describing: self.searchResultData.count) : "No") result(s) found."
-                self.numberOfResult.transform = .identity
-                self.numberOfResult.alpha = 1
-                self.numberOfResult.layer.opacity = 0.95
-            })
+            updateNumberOfResult()
         }
     }
+    
     var isHideSearchResult = false {
         didSet {
             if self.isHideSearchResult {
@@ -35,7 +27,7 @@ class SearchResultTableView: UIView {
         }
     }
     
-    lazy var searchResultTableView: UITableView = {
+    var searchResultTableView: UITableView = {
         let tv = UITableView()
         
         tv.rowHeight = 65
@@ -45,7 +37,7 @@ class SearchResultTableView: UIView {
         return tv
     }()
     
-    lazy var numberOfResult: UILabel = {
+    var numberOfResult: UILabel = {
         let label = UILabel()
         
         label.textAlignment = .center
@@ -70,7 +62,6 @@ class SearchResultTableView: UIView {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
         setupView()
     }
     
@@ -94,6 +85,18 @@ class SearchResultTableView: UIView {
         searchResultTableView.dataSource = self
         searchResultTableView.delegate = self
     }
+    
+    private func updateNumberOfResult() {
+        numberOfResult.alpha = 0
+        numberOfResult.transform = CGAffineTransform(translationX: 0, y: -numberOfResult.frame.size.height)
+        
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            self.numberOfResult.text = "\(self.searchResultData.count > 0 ? String(describing: self.searchResultData.count) : "No") result(s) found."
+            self.numberOfResult.transform = .identity
+            self.numberOfResult.alpha = 1
+            self.numberOfResult.layer.opacity = 0.95
+        })
+    }
 }
 
 extension SearchResultTableView: UITableViewDataSource {
@@ -113,7 +116,7 @@ extension SearchResultTableView: UITableViewDataSource {
         cell.addButton.tag = indexPath.row
         cell.addButton.addTarget(self, action: #selector(didTapAddButton(_:)), for: .touchUpInside)
         
-        let isAddedToWatch = UserDefaultsHelper.shared.isSymbolExists(stockDataViewModel.symbol)
+        let isAddedToWatch = UserDefaultsHelper.shared.isSymbolInWatchedList(stockDataViewModel.symbol)
         // change the button image wheather symbol is already added to watlist or not.
         let img = UIImage(systemName: isAddedToWatch ? "checkmark.circle.fill" : "plus.circle.fill")
         cell.addButton.setBackgroundImage(img, for: .normal)
@@ -157,6 +160,7 @@ extension SearchResultTableView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // to remove highlighting effect
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -168,7 +172,7 @@ extension SearchResultTableView: UITableViewDelegate {
         
         let selectedSymbol = searchResultData[sender.tag].symbol
         // update the list of watch list in UserDefaults
-        UserDefaultsHelper.shared.updateWatchedSymbolsInUserDefaults(stockSymbol: selectedSymbol)
+        UserDefaultsHelper.shared.updateWatchedSymbols(stockSymbol: selectedSymbol)
         
         sender.transform = .identity
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 1, options: .curveEaseIn, animations: {

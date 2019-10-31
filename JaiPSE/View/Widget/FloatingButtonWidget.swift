@@ -69,7 +69,7 @@ class FloatingButtonWidget: UIButton {
             self.transform = CGAffineTransform(rotationAngle: 40)
             
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: {
-                self.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+                self.layer.shadowColor = #colorLiteral(red: 0.9027048945, green: 0.1456339359, blue: 0.1390642822, alpha: 1)
                 self.layer.shadowOffset = CGSize(width: 0, height: 10)
                 self.layer.shadowOpacity = 0.40
                 self.layer.shadowRadius = 10

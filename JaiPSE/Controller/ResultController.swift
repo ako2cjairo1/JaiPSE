@@ -63,7 +63,7 @@ class ResultController {
     fileprivate func additionalFilter() -> [StockViewModel] {
         // filter StockViewModel data using stocks added by user (stored in UserDefaults)
         if let userFilter = isFilteredByUserDefaults, userFilter  {
-            if let stockCodesFromUserDefaults = UserDefaults.standard.array(forKey: Constant.userDefaultsForKeyStockNames) as? [String] {
+            if let stockCodesFromUserDefaults = UserDefaultsHelper.shared.getWatchedSymbols() {
                 stockVMData = stockVMData.filter {
                     $0.createPredicate(stockCodesFromUserDefaults, $0)
                 }

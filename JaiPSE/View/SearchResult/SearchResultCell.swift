@@ -34,7 +34,7 @@ class SearchResultCell: UITableViewCell {
                     
                 } else if percent > 0 {
                     formattedPercent = "+\(formattedPercent)"
-                    tintColor = #colorLiteral(red: 0.2797255516, green: 0.8248286843, blue: 0.3802976012, alpha: 1)
+                    tintColor = #colorLiteral(red: 0.1636243567, green: 0.6514477778, blue: 0.2769545858, alpha: 1)
                     textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
                 }
                 
