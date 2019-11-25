@@ -21,25 +21,25 @@ struct StockViewModel {
         self.symbol = stock.code
     }
     
-    func createPredicate(_ searchKey: String, _ stock: StockViewModel) -> Bool {
+    func createPredicate(_ searchKey: String) -> Bool {
         // stock name criteria
-        if stock.name.lowercased().range(of: searchKey.lowercased()) != nil ||
+        if self.name.lowercased().range(of: searchKey.lowercased()) != nil ||
             // stock code criteria
-            stock.symbol.lowercased().range(of: searchKey.lowercased()) != nil {
+            self.symbol.lowercased().range(of: searchKey.lowercased()) != nil {
             return true
         }
         
         // stock price criteria
-        if let price = Float(searchKey), price <= stock.price {
+        if let price = Float(searchKey), price <= self.price {
             return true
         }
         
         return false
     }
     
-    func createPredicate(_ symbols: [String], _ stock: StockViewModel) -> Bool {
+    func createPredicate(_ symbols: [String]) -> Bool {
         for symbol in symbols {
-            if stock.symbol.lowercased() == symbol.lowercased() {
+            if self.symbol.lowercased() == symbol.lowercased() {
                 return true
             }
         }

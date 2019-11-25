@@ -65,7 +65,7 @@ class ResultController {
         if let userFilter = isFilteredByUserDefaults, userFilter  {
             if let stockCodesFromUserDefaults = UserDefaultsHelper.shared.getWatchedSymbols() {
                 stockVMData = stockVMData.filter {
-                    $0.createPredicate(stockCodesFromUserDefaults, $0)
+                    $0.createPredicate(stockCodesFromUserDefaults)
                 }
             } else {
                 return [StockViewModel]()
@@ -73,7 +73,7 @@ class ResultController {
         }
         
         if let keyword = self.searchKeyword, !keyword.isEmpty {
-            stockVMData = stockVMData.filter({ $0.createPredicate(keyword, $0) })
+            stockVMData = stockVMData.filter({ $0.createPredicate(keyword) })
         }
         
         return stockVMData

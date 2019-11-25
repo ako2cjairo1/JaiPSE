@@ -32,7 +32,7 @@ extension StocksController {
         searchResultTableView.alpha = 1
         searchResultTableView.transform = .identity
         
-        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
             self.searchResultTableView.transform = CGAffineTransform(translationX: 0, y: self.view.frame.size.height - 170)
             self.searchResultTableView.alpha = 0.5
             
